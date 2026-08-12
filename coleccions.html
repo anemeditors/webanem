@@ -24,8 +24,6 @@
   animation: fadeUp 0.8s ease;
   box-sizing: border-box;
   margin-bottom: 70px !important; 
-  
-  /* MARGE INTERN PERQUÈ L'ETIQUETA TINGUI ESPAI FORA I NO ES TALLI */
   padding-left: 15px; 
 }
 
@@ -52,13 +50,12 @@
   box-shadow: 0 14px 28px rgba(0,0,0,0.35);
 }
 
-/* ETIQUETA HORITZONTAL FORA DEL LLIBRE */
 .badge-destacat {
   position: absolute;
   top: 0;
   left: 0;
-  transform: translateX(-100%); /* Desplaça l'etiqueta completament a l'esquerra de la imatge */
-  margin-left: -8px; /* Separació neta respecte a la imatge */
+  transform: translateX(-100%);
+  margin-left: -8px;
   color: white;
   font-size: 0.75em;
   padding: 4px 8px;
@@ -75,7 +72,7 @@
 }
 
 .badge-destacat-color { 
-  background-color: #2e7d32; /* Verd per als destacats */
+  background-color: #2e7d32;
 }
 
 .card-destacada a.titol {
@@ -187,7 +184,6 @@
   background-color: #d06900;
 }
 
-/* Animacions i adaptació mòbil */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -207,7 +203,7 @@
 }
 </style>
 
-<!-- CONTENIDORS DE LES SECCIONS -->
+<!-- CONTENIDORS AMB ELS ID'S QUE EL SCRIPT NECESSITA -->
 <div id="seccio-novetats" class="inici-grid-2col"></div>
 <div id="seccio-destacats" class="inici-grid-2col"></div>
 <div id="seccio-general" class="inici-grid-4col"></div>
@@ -304,7 +300,6 @@
           textAutorPreu += ` &bull; <span class="preu-inline">${preuFormatted}</span>`;
         }
 
-        // Disseny 1: Novetat
         if (estatInici === 'Novetat') {
           htmlNovetats += `
             <div class="card-destacada">
@@ -316,9 +311,7 @@
               <div class="autor">${textAutorPreu}</div>
               ${htmlBotons}
             </div>`;
-        } 
-        // Disseny 2: Destacat
-        else if (estatInici === 'Destacat') {
+        } else if (estatInici === 'Destacat') {
           htmlDestacats += `
             <div class="card-destacada">
               <div class="wrapper-coberta">
@@ -329,9 +322,7 @@
               <div class="autor">${textAutorPreu}</div>
               ${htmlBotons}
             </div>`;
-        } 
-        // Disseny 3: General
-        else if (estatInici === 'General') {
+        } else if (estatInici === 'General') {
           htmlGeneral += `
             <div class="llibre-general">
               <a href="${linkUrl}"><img src="${imgUrl}" alt="${titol}"></a>
