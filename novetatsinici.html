@@ -1,6 +1,121 @@
-<div id="seccio-novetats" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin-top: 40px;"></div>
-<div id="seccio-destacats" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin-top: 40px;"></div>
-<div id="seccio-general" style="display: flex; flex-wrap: wrap; justify-content: flex-start; margin-top: 40px;"></div>
+<style>
+  .anem-grid-2 {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    margin-top: 40px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .anem-grid-4 {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-start !important;
+    margin-top: 40px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .anem-card-destacada {
+    width: 47% !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    margin-bottom: 50px !important;
+    position: relative !important;
+  }
+  .anem-wrapper-coberta {
+    position: relative !important;
+    display: inline-block !important;
+    margin-bottom: 15px !important;
+  }
+  .anem-badge {
+    position: absolute !important;
+    top: -10px !important;
+    left: -10px !important;
+    color: white !important;
+    font-size: 0.75em !important;
+    padding: 4px 8px !important;
+    font-weight: bold !important;
+    border-radius: 3px !important;
+    text-transform: uppercase !important;
+    z-index: 10 !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+  }
+  .anem-badge-novetat { background-color: crimson !important; }
+  .anem-badge-destacat { background-color: #2e7d32 !important; }
+
+  .anem-card-destacada img {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 280px !important;
+    display: block !important;
+    margin: 0 auto !important;
+    filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.25)) !important;
+    mix-blend-mode: multiply !important;
+  }
+  .anem-card-general {
+    width: 23.5% !important;
+    text-align: center !important;
+    margin-bottom: 40px !important;
+    box-sizing: border-box !important;
+    padding: 0 5px !important;
+  }
+  .anem-card-general img {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 140px !important;
+    display: block !important;
+    margin: 0 auto 10px auto !important;
+    filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.22)) !important;
+    mix-blend-mode: multiply !important;
+  }
+  .anem-titol {
+    display: block !important;
+    font-weight: bold !important;
+    color: #c00 !important;
+    text-decoration: none !important;
+    margin: 0 0 4px 0 !important;
+    font-size: 1.1em !important;
+    line-height: 1.2 !important;
+  }
+  .anem-autor {
+    font-size: 0.9em !important;
+    color: #555 !important;
+    margin-bottom: 4px !important;
+  }
+  .anem-preu {
+    font-size: 1em !important;
+    font-weight: bold !important;
+    color: #333 !important;
+    margin-bottom: 10px !important;
+  }
+  .anem-botons {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    flex-wrap: wrap !important;
+    margin-top: 6px !important;
+  }
+  .anem-btn {
+    display: inline-block !important;
+    padding: 4px 8px !important;
+    font-size: 0.7em !important;
+    font-weight: bold !important;
+    text-decoration: none !important;
+    border-radius: 3px !important;
+    color: #fff !important;
+  }
+  .anem-btn-ttl { background-color: #2b2b2b !important; }
+  .anem-btn-amz { background-color: #e47911 !important; }
+
+  @media screen and (max-width: 768px) {
+    .anem-card-destacada { width: 100% !important; }
+    .anem-card-general { width: 47% !important; }
+  }
+</style>
+
+<div id="seccio-novetats" class="anem-grid-2"></div>
+<div id="seccio-destacats" class="anem-grid-2"></div>
+<div id="seccio-general" class="anem-grid-4"></div>
 
 <script>
 (function() {
@@ -40,9 +155,9 @@
 
   function generarBotons(ttl, amz) {
     if (!ttl && !amz) return '';
-    var h = '<div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 8px;">';
-    if (ttl) h += '<a style="display: inline-block; padding: 5px 10px; font-size: 0.75em; font-weight: bold; text-decoration: none; border-radius: 3px; background-color: #2b2b2b; color: #ffffff;" href="' + ttl + '" target="_blank" rel="noopener">Todostuslibros</a>';
-    if (amz) h += '<a style="display: inline-block; padding: 5px 10px; font-size: 0.75em; font-weight: bold; text-decoration: none; border-radius: 3px; background-color: #e47911; color: #ffffff;" href="' + amz + '" target="_blank" rel="noopener">Amazon</a>';
+    var h = '<div class="anem-botons">';
+    if (ttl) h += '<a class="anem-btn anem-btn-ttl" href="' + ttl + '" target="_blank" rel="noopener">Todostuslibros</a>';
+    if (amz) h += '<a class="anem-btn anem-btn-amz" href="' + amz + '" target="_blank" rel="noopener">Amazon</a>';
     h += '</div>';
     return h;
   }
@@ -91,33 +206,33 @@
         var estatNorm = norm(estat);
 
         if (estatNorm.includes('novetat')) {
-          hNovetats += '<div style="width: 47%; text-align: center; box-sizing: border-box; margin-bottom: 70px; padding-left: 15px;">' +
-            '<div style="position: relative; display: inline-flex; margin-bottom: 20px; width: auto;">' +
-              '<span style="position: absolute; top: 0; right: 100%; margin-right: 8px; color: white; font-size: 0.75em; padding: 4px 8px; font-weight: bold; border-radius: 3px; background-color: crimson; text-transform: uppercase; white-space: nowrap; z-index: 2;">NOVETAT</span>' +
-              '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '" style="width: 100%; height: auto; max-width: 320px; display: block; margin: 0 auto; filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.25)); mix-blend-mode: multiply;"></a>' +
+          hNovetats += '<div class="anem-card-destacada">' +
+            '<div class="anem-wrapper-coberta">' +
+              '<span class="anem-badge anem-badge-novetat">NOVETAT</span>' +
+              '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
             '</div>' +
-            '<a style="display: block; font-weight: bold; color: #c00; text-decoration: none; margin: 0 0 4px 0; font-size: 1.2em;" href="' + link + '"><b>' + titol.toUpperCase() + '</b></a>' +
-            '<div style="font-size: 1em; color: #555; margin-bottom: 4px;">' + autor + '</div>' +
-            '<div style="font-size: 1.1em; font-weight: bold; color: #333; margin-bottom: 12px;">' + preu + '</div>' +
+            '<a class="anem-titol" href="' + link + '"><b>' + titol.toUpperCase() + '</b></a>' +
+            '<div class="anem-autor">' + autor + '</div>' +
+            '<div class="anem-preu">' + preu + '</div>' +
             botons +
           '</div>';
         } else if (estatNorm.includes('destacat')) {
-          hDestacats += '<div style="width: 47%; text-align: center; box-sizing: border-box; margin-bottom: 70px; padding-left: 15px;">' +
-            '<div style="position: relative; display: inline-flex; margin-bottom: 20px; width: auto;">' +
-              '<span style="position: absolute; top: 0; right: 100%; margin-right: 8px; color: white; font-size: 0.75em; padding: 4px 8px; font-weight: bold; border-radius: 3px; background-color: #2e7d32; text-transform: uppercase; white-space: nowrap; z-index: 2;">DESTACAT</span>' +
-              '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '" style="width: 100%; height: auto; max-width: 320px; display: block; margin: 0 auto; filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.25)); mix-blend-mode: multiply;"></a>' +
+          hDestacats += '<div class="anem-card-destacada">' +
+            '<div class="anem-wrapper-coberta">' +
+              '<span class="anem-badge anem-badge-destacat">DESTACAT</span>' +
+              '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
             '</div>' +
-            '<a style="display: block; font-weight: bold; color: #c00; text-decoration: none; margin: 0 0 4px 0; font-size: 1.2em;" href="' + link + '"><b>' + titol.toUpperCase() + '</b></a>' +
-            '<div style="font-size: 1em; color: #555; margin-bottom: 4px;">' + autor + '</div>' +
-            '<div style="font-size: 1.1em; font-weight: bold; color: #333; margin-bottom: 12px;">' + preu + '</div>' +
+            '<a class="anem-titol" href="' + link + '"><b>' + titol.toUpperCase() + '</b></a>' +
+            '<div class="anem-autor">' + autor + '</div>' +
+            '<div class="anem-preu">' + preu + '</div>' +
             botons +
           '</div>';
         } else if (estatNorm.includes('general') || (estatNorm !== '' && !estatNorm.includes('no'))) {
-          hGeneral += '<div style="width: 23.5%; text-align: center; margin-bottom: 50px; box-sizing: border-box;">' +
-            '<a style="display: block; margin-bottom: 15px; text-decoration: none;" href="' + link + '"><img src="' + img + '" alt="' + titol + '" style="width: auto; height: auto; max-width: 130px; max-height: 200px; display: block; margin: 0 auto; filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.22)); mix-blend-mode: multiply;"></a>' +
-            '<a style="display: block; font-weight: bold; color: red; text-decoration: none; margin: 0 0 3px 0;" href="' + link + '">' + titol.toUpperCase() + '</a>' +
-            '<div style="font-size: 0.9em; color: #555; margin-bottom: 3px;">' + autor + '</div>' +
-            '<div style="font-size: 0.95em; font-weight: bold; color: #333; margin-bottom: 10px;">' + preu + '</div>' +
+          hGeneral += '<div class="anem-card-general">' +
+            '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
+            '<a class="anem-titol" href="' + link + '">' + titol.toUpperCase() + '</a>' +
+            '<div class="anem-autor">' + autor + '</div>' +
+            '<div class="anem-preu">' + preu + '</div>' +
             botons +
           '</div>';
         }
