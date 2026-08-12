@@ -178,7 +178,7 @@
         row.push('');
       } else if ((c === '\r' || c === '\n') && !q) {
         if (c === '\r' && next === '\n') { i++; }
-        r.push(row);
+        r.path ? r.path(row) : r.push(row);
         row = [''];
       } else {
         row[row.length - 1] += c;
@@ -255,8 +255,7 @@
               '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
             '</div>' +
             '<a class="anem-titol-llibre" href="' + link + '"><b>' + titol.toUpperCase() + '</b></a>' +
-            '<div class="anem-autor-llibre">' + autor + '</div>' +
-            '<div class="anem-preu-llibre">' + preu + '</div>' +
+            '<div class="anem-autor-llibre">' + autor + ' &bull; <span class="anem-preu-llibre" style="display:inline; font-size:inherit; font-weight:bold; color:#333;">' + preu + '</span></div>' +
             botons +
           '</div>';
         } else if (estatNorm.includes('destacat')) {
@@ -266,8 +265,7 @@
               '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
             '</div>' +
             '<a class="anem-titol-llibre" href="' + link + '"><b>' + titol.toUpperCase() + '</b></a>' +
-            '<div class="anem-autor-llibre">' + autor + '</div>' +
-            '<div class="anem-preu-llibre">' + preu + '</div>' +
+            '<div class="anem-autor-llibre">' + autor + ' &bull; <span class="anem-preu-llibre" style="display:inline; font-size:inherit; font-weight:bold; color:#333;">' + preu + '</span></div>' +
             botons +
           '</div>';
         } else if (estatNorm.includes('general') || (estatNorm !== '' && !estatNorm.includes('no'))) {
@@ -275,10 +273,9 @@
             '<div>' +
               '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
               '<a class="anem-titol-llibre" href="' + link + '">' + titol.toUpperCase() + '</a>' +
-              '<div class="anem-autor-llibre">' + autor + '</div>' +
+              '<div class="anem-autor-llibre">' + autor + ' &bull; <span class="anem-preu-llibre" style="display:inline; font-size:inherit; font-weight:bold; color:#333;">' + preu + '</span></div>' +
             '</div>' +
             '<div>' +
-              '<div class="anem-preu-llibre">' + preu + '</div>' +
               botons +
             '</div>' +
           '</div>';
@@ -286,11 +283,8 @@
       }
 
       if (secNovetats) secNovetats.innerHTML = hNovetats;
-      if (secDestacats) secDestacats.innerHTML = hNovetats ? hDestacats : hDestacats; // Fixed assignment safety
-      if (secGeneral) secGeneral.innerHTML = hGeneral;
-
-      // Ensure proper assignment for destacats specifically
       if (secDestacats) secDestacats.innerHTML = hDestacats;
+      if (secGeneral) secGeneral.innerHTML = hGeneral;
 
     } catch (e) {
       console.error(e);
