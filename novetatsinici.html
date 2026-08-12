@@ -13,6 +13,7 @@
     gap: 30px !important;
     margin-top: 40px !important;
     width: 100% !important;
+    box-sizing: border-box !important;
   }
   .anem-grid-4-col {
     display: grid !important;
@@ -20,6 +21,7 @@
     gap: 25px !important;
     margin-top: 40px !important;
     width: 100% !important;
+    box-sizing: border-box !important;
   }
   .anem-card-gran {
     width: 48% !important;
@@ -33,6 +35,7 @@
     position: relative !important;
     display: inline-block !important;
     margin-bottom: 20px !important;
+    max-width: 100% !important;
   }
   .anem-card-gran img {
     width: 100% !important;
@@ -51,6 +54,7 @@
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
+    width: 100% !important;
   }
   .anem-card-petit img {
     width: 100% !important;
@@ -88,14 +92,16 @@
     font-size: 1.15rem !important;
     line-height: 1.2 !important;
     margin: 0 0 5px 0 !important;
+    word-break: break-word !important;
   }
   .anem-card-petit .anem-titol-llibre {
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
   }
   .anem-autor-llibre {
     font-size: 0.95rem !important;
     color: #555 !important;
     margin-bottom: 5px !important;
+    word-break: break-word !important;
   }
   .anem-card-petit .anem-autor-llibre {
     font-size: 0.85rem !important;
@@ -133,14 +139,16 @@
     .anem-grid-4-col { grid-template-columns: repeat(2, 1fr) !important; }
   }
   @media screen and (max-width: 768px) {
-    .anem-grid-2-col { flex-direction: column !important; align-items: center !important; }
-    .anem-card-gran { width: 100% !important; max-width: 320px !important; }
-    .anem-grid-4-col { grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; }
+    .anem-wrapper-total { padding: 0 10px !important; box-sizing: border-box !important; }
+    .anem-grid-2-col { display: block !important; width: 100% !important; margin-top: 20px !important; }
+    .anem-card-gran { width: 100% !important; max-width: 100% !important; margin-bottom: 40px !important; display: block !important; }
+    .anem-card-gran img { max-width: 240px !important; }
+    .anem-grid-4-col { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; width: 100% !important; margin-top: 20px !important; }
     .anem-etiqueta {
       position: relative !important;
+      top: auto !important;
       right: auto !important;
-      margin-right: 0 !important;
-      margin-bottom: 10px !important;
+      margin: 0 auto 10px auto !important;
       display: inline-block !important;
     }
   }
@@ -278,8 +286,11 @@
       }
 
       if (secNovetats) secNovetats.innerHTML = hNovetats;
-      if (secDestacats) secDestacats.innerHTML = hDestacats;
+      if (secDestacats) secDestacats.innerHTML = hNovetats ? hDestacats : hDestacats; // Fixed assignment safety
       if (secGeneral) secGeneral.innerHTML = hGeneral;
+
+      // Ensure proper assignment for destacats specifically
+      if (secDestacats) secDestacats.innerHTML = hDestacats;
 
     } catch (e) {
       console.error(e);
