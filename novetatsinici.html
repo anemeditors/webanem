@@ -1,4 +1,3 @@
-<!-- ESTILS -->
 <style>
 /* CONTENIDORS PRINCIPALS */
 #seccio-general, .inici-grid-4col { 
@@ -35,6 +34,306 @@
   background: transparent !important; 
   width: 100% !important; 
 }
+
+.card-destacada img { 
+  width: 100% !important; 
+  height: auto !important; 
+  max-width: 320px !important; 
+  transition: transform 0.3s, filter 0.3s !important; 
+  display: block !important; 
+  margin: 0 auto !important; 
+  background: transparent !important; 
+  border: none !important; 
+  outline: none !important; 
+  box-shadow: none !important; 
+  filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.25)) !important; 
+  mix-blend-mode: multiply !important;
+}
+
+.card-destacada img:hover { 
+  transform: scale(1.03) !important; 
+  filter: drop-shadow(0px 12px 18px rgba(0,0,0,0.35)) !important; 
+}
+
+.badge-destacat { 
+  position: absolute !important; 
+  top: 0 !important; 
+  left: 0 !important; 
+  transform: translateX(-100%) !important; 
+  margin-left: -8px !important; 
+  color: white !important; 
+  font-size: 0.75em !important; 
+  padding: 4px 8px !important; 
+  font-weight: bold !important; 
+  border-radius: 3px !important; 
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important; 
+  text-transform: uppercase !important; 
+  white-space: nowrap !important; 
+  z-index: 2 !important; 
+}
+.badge-novetat { background-color: crimson !important; }
+.badge-destacat-color { background-color: #2e7d32 !important; }
+
+.card-destacada a.titol { 
+  display: block !important; 
+  font-weight: bold !important; 
+  color: #c00 !important; 
+  text-decoration: none !important; 
+  margin: 0 0 4px 0 !important; 
+  font-size: 1.2em !important; 
+  line-height: 1.2 !important; 
+  background: transparent !important;
+}
+.card-destacada .autor { font-size: 1em !important; color: #555 !important; margin-bottom: 4px !important; line-height: 1.2 !important; }
+.card-destacada .preu { font-size: 1.1em !important; font-weight: bold !important; color: #333 !important; margin-bottom: 12px !important; }
+
+/* SECCIÓ GENERAL */
+.llibre-general { 
+  width: 23.5% !important; 
+  text-align: center !important; 
+  margin-bottom: 50px !important; 
+  box-sizing: border-box !important; 
+  background: transparent !important; 
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+}
+
+.llibre-general a { 
+  display: block !important; 
+  margin-bottom: 15px !important; 
+  text-decoration: none !important; 
+  background: transparent !important; 
+  border: none !important; 
+  padding: 0 !important; 
+  box-shadow: none !important;
+}
+
+.llibre-general img { 
+  width: 100% !important; 
+  height: auto !important; 
+  max-width: 100% !important; 
+  display: block !important; 
+  margin: 0 auto !important; 
+  background: transparent !important; 
+  border: none !important; 
+  outline: none !important; 
+  box-shadow: none !important; 
+  filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.22)) !important; 
+  mix-blend-mode: multiply !important;
+  transition: transform 0.2s, filter 0.2s !important; 
+}
+
+.llibre-general img:hover { 
+  transform: scale(1.04) !important; 
+  filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.32)) !important; 
+}
+
+.llibre-general a.titol { display: block !important; font-weight: bold !important; color: red !important; text-decoration: none !important; margin: 0 0 3px 0 !important; line-height: 1.2 !important; background: transparent !important; }
+.llibre-general .autor { font-size: 0.9em !important; color: #555 !important; margin-bottom: 3px !important; line-height: 1.2 !important; }
+.llibre-general .preu { font-size: 0.95em !important; font-weight: bold !important; color: #333 !important; margin-bottom: 10px !important; }
+
+.botons-compra { display: flex !important; justify-content: center !important; gap: 8px !important; flex-wrap: wrap !important; margin-top: 8px !important; background: transparent !important; }
+.btn-extern { display: inline-block !important; padding: 5px 10px !important; font-size: 0.75em !important; font-weight: bold !important; text-decoration: none !important; border-radius: 3px !important; transition: background-color 0.2s, transform 0.1s !important; letter-spacing: 0.3px !important; line-height: 1.2 !important; }
+.btn-extern:hover { transform: translateY(-1px) !important; }
+.btn-todostuslibros { background-color: #2b2b2b !important; color: #ffffff !important; }
+.btn-todostuslibros:hover { background-color: #000000 !important; }
+.btn-amazon { background-color: #e47911 !important; color: #ffffff !important; }
+.btn-amazon:hover { background-color: #d06900 !important; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* FORÇAT PER A MÒBIL */
+@media screen and (max-width: 768px) {
+  #seccio-general, .inici-grid-4col { 
+    display: flex !important; 
+    flex-direction: row !important;
+    flex-wrap: wrap !important; 
+    justify-content: space-between !important; 
+    gap: 0 !important; 
+    width: 100% !important;
+  }
+  
+  .card-destacada { 
+    width: 100% !important; 
+    margin-bottom: 60px !important; 
+    padding-left: 0 !important; 
+  }
+  
+  .llibre-general { 
+    width: 47% !important; 
+    max-width: 47% !important;
+    flex: 0 0 47% !important;
+    margin-bottom: 40px !important; 
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .llibre-general a, 
+  .card-destacada a,
+  .llibre-general img,
+  .card-destacada img {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .badge-destacat { 
+    position: relative !important; 
+    transform: none !important; 
+    margin-left: 0 !important; 
+    margin-bottom: 8px !important; 
+    display: inline-block !important; 
+  }
+}
+</style>
+
+<!-- ESTRUCTURA -->
+<div id="seccio-novetats" class="inici-grid-2col"></div>
+<div id="seccio-destacats" class="inici-grid-2col"></div>
+<div id="seccio-general" class="inici-grid-4col"></div>
+
+<!-- SCRIPT DE LECTURA ROBUSTA -->
+<script>
+(function() {
+  const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQESjqxo632pyAya7JVHONT0tCGm6XSLnHE1ft4dwY7uIRCUKSiXac8tOj1hYVEkmW-1E7KkPgYv-DR/pub?output=csv';
+
+  function parseCSV(text) {
+    let p = '', c = '', r = [];
+    let q = false;
+    let row = [''];
+    for (let i = 0; i < text.length; i++) {
+      c = text[i];
+      let next = text[i+1];
+      if (c === '"') {
+        if (q && next === '"') { row[row.length - 1] += '"'; i++; }
+        else { q = !q; }
+      } else if (c === ',' && !q) {
+        row.push('');
+      } else if ((c === '\r' || c === '\n') && !q) {
+        if (c === '\r' && next === '\n') { i++; }
+        r.push(row);
+        row = [''];
+      } else {
+        row[row.length - 1] += c;
+      }
+    }
+    if (row.length > 1 || row[0] !== '') r.push(row);
+    return r;
+  }
+
+  function norm(str) {
+    return (str || '').normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
+  }
+
+  function trobarIndex(headers, possibles) {
+    return headers.findIndex(h => possibles.includes(norm(h)));
+  }
+
+  function generarBotons(ttl, amz) {
+    if (!ttl && !amz) return '';
+    let h = '<div class="botons-compra">';
+    if (ttl) h += `<a class="btn-extern btn-todostuslibros" href="${ttl}" target="_blank" rel="noopener">Todostuslibros</a>`;
+    if (amz) h += `<a class="btn-extern btn-amazon" href="${amz}" target="_blank" rel="noopener">Amazon</a>`;
+    h += '</div>';
+    return h;
+  }
+
+  async function carregarDades() {
+    const secNovetats = document.getElementById('seccio-novetats');
+    const secDestacats = document.getElementById('seccio-destacats');
+    const secGeneral = document.getElementById('seccio-general');
+
+    try {
+      const res = await fetch(CSV_URL);
+      const text = await res.text();
+      const rows = parseCSV(text);
+
+      if (rows.length < 2) return;
+
+      const headers = rows[0];
+
+      const idxTitol = trobarIndex(headers, ['titol', 'titulo', 'title']);
+      const idxAutor = trobarIndex(headers, ['autor', 'author']);
+      const idxPreu = trobarIndex(headers, ['pvp', 'preu', 'precio', 'price']);
+      const idxInici = trobarIndex(headers, ['inici web', 'inici', 'inicio web', 'inicio', 'estat']);
+      const idxImg = trobarIndex(headers, ['coberta', 'url coberta', 'portada', 'url portada', 'imatge', 'imagen']);
+      const idxLink = trobarIndex(headers, ['url llibre', 'url fitxa', 'url', 'enllac', 'link']);
+      const idxTTL = trobarIndex(headers, ['todostuslibros', 'todos tus libros', 'ttl']);
+      const idxAmz = trobarIndex(headers, ['amazon', 'amz']);
+
+      let hNovetats = '', hDestacats = '', hGeneral = '';
+
+      for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        const titol = idxTitol !== -1 && row[idxTitol] ? row[idxTitol].trim() : '';
+        const estat = idxInici !== -1 && row[idxInici] ? row[idxInici].trim() : '';
+
+        if (!titol) continue;
+
+        const autor = idxAutor !== -1 && row[idxAutor] ? row[idxAutor].trim() : '';
+        const preuRaw = idxPreu !== -1 && row[idxPreu] ? row[idxPreu].trim() : '';
+        const img = idxImg !== -1 && row[idxImg] ? row[idxImg].trim() : '';
+        const link = idxLink !== -1 && row[idxLink] ? row[idxLink].trim() : '#';
+        const urlTTL = idxTTL !== -1 && row[idxTTL] ? row[idxTTL].trim() : '';
+        const urlAmz = idxAmz !== -1 && row[idxAmz] ? row[idxAmz].trim() : '';
+
+        const preu = preuRaw && !preuRaw.includes('€') ? preuRaw + ' €' : preuRaw;
+        const botons = generarBotons(urlTTL, urlAmz);
+        const estatNorm = norm(estat);
+
+        if (estatNorm.includes('novetat')) {
+          hNovetats += `
+            <div class="card-destacada">
+              <div class="wrapper-coberta">
+                <span class="badge-destacat badge-novetat">NOVETAT</span>
+                <a href="${link}"><img src="${img}" alt="${titol}"></a>
+              </div>
+              <a class="titol" href="${link}"><b>${titol.toUpperCase()}</b></a>
+              <div class="autor">${autor}</div>
+              <div class="preu">${preu}</div>
+              ${botons}
+            </div>`;
+        } else if (estatNorm.includes('destacat')) {
+          hDestacats += `
+            <div class="card-destacada">
+              <div class="wrapper-coberta">
+                <span class="badge-destacat badge-destacat-color">DESTACAT</span>
+                <a href="${link}"><img src="${img}" alt="${titol}"></a>
+              </div>
+              <a class="titol" href="${link}"><b>${titol.toUpperCase()}</b></a>
+              <div class="autor">${autor}</div>
+              <div class="preu">${preu}</div>
+              ${botons}
+            </div>`;
+        } else if (estatNorm.includes('general') || (estatNorm !== '' && !estatNorm.includes('no'))) {
+          hGeneral += `
+            <div class="llibre-general">
+              <a href="${link}"><img src="${img}" alt="${titol}"></a>
+              <a class="titol" href="${link}">${titol.toUpperCase()}</a>
+              <div class="autor">${autor}</div>
+              <div class="preu">${preu}</div>
+              ${botons}
+            </div>`;
+        }
+      }
+
+      if (secNovetats) secNovetats.innerHTML = hNovetats;
+      if (secDestacats) secDestacats.innerHTML = hDestacats;
+      if (secGeneral) secGeneral.innerHTML = hGeneral;
+
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  carregarDades();
+})();
+</script>}
 
 .card-destacada img { 
   width: 100% !important; 
