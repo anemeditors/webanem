@@ -4,8 +4,8 @@
 .inici-grid-4col { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 2%; margin-top: 40px; }
 
 .card-destacada { width: 47%; text-align: center; animation: fadeUp 0.8s ease; box-sizing: border-box; margin-bottom: 70px !important; padding-left: 15px; }
-.card-destacada .wrapper-coberta { position: relative; display: inline-block; margin-bottom: 20px; }
-.card-destacada img { height: 360px; width: auto; max-width: 100%; object-fit: contain; box-shadow: 0 8px 16px rgba(0,0,0,0.25); transition: transform 0.3s, box-shadow 0.3s; display: block; margin: 0 auto; }
+.card-destacada .wrapper-coberta { position: relative; display: inline-block; margin-bottom: 20px; background: transparent; }
+.card-destacada img { height: 360px; width: auto; max-width: 100%; object-fit: contain; box-shadow: 0 8px 16px rgba(0,0,0,0.25); transition: transform 0.3s, box-shadow 0.3s; display: block; margin: 0 auto; background: transparent; border: none; }
 .card-destacada img:hover { transform: scale(1.05) rotate(1deg); box-shadow: 0 14px 28px rgba(0,0,0,0.35); }
 
 .badge-destacat { position: absolute; top: 0; left: 0; transform: translateX(-100%); margin-left: -8px; color: white; font-size: 0.75em; padding: 4px 8px; font-weight: bold; border-radius: 3px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); text-transform: uppercase; white-space: nowrap; z-index: 2; }
@@ -17,7 +17,7 @@
 .card-destacada .preu { font-size: 1.1em; font-weight: bold; color: #333; margin-bottom: 12px; }
 
 .llibre-general { width: 23.5%; text-align: center; margin-bottom: 50px !important; box-sizing: border-box; }
-.llibre-general img { height: 230px; width: auto; max-width: 100%; object-fit: contain; margin: 0 auto 15px auto; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); display: block; }
+.llibre-general img { height: 230px; width: auto; max-width: 100%; object-fit: contain; margin: 0 auto 15px auto; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); display: block; background: transparent; border: none; }
 .llibre-general img:hover { transform: scale(1.05); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25); }
 .llibre-general a.titol { display: block; font-weight: bold; color: red; text-decoration: none; margin: 0 0 3px 0; line-height: 1.2; }
 .llibre-general .autor { font-size: 0.9em; color: #555; margin-bottom: 3px; line-height: 1.2; }
@@ -32,10 +32,16 @@
 .btn-amazon:hover { background-color: #d06900; }
 
 @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* AJUSTOS ESPECÍFICS PER A MÒBIL */
 @media (max-width: 768px) {
   .card-destacada { width: 100%; margin-bottom: 60px !important; padding-left: 0; }
   .llibre-general { width: 48%; margin-bottom: 40px !important; }
-  .card-destacada img { height: 300px; }
+  
+  /* Eliminació de qualsevol alçada fixa o marc a les imatges */
+  .card-destacada img { height: auto; max-height: 320px; border: none; background: transparent; }
+  .llibre-general img { height: auto; max-height: 220px; border: none; background: transparent; }
+  
   .badge-destacat { position: relative; transform: none; margin-left: 0; margin-bottom: 8px; display: inline-block; }
 }
 </style>
@@ -105,7 +111,6 @@
 
       const headers = rows[0];
 
-      // Reconeixement flexible de capçaleres
       const idxTitol = trobarIndex(headers, ['titol', 'titulo', 'title']);
       const idxAutor = trobarIndex(headers, ['autor', 'author']);
       const idxPreu = trobarIndex(headers, ['pvp', 'preu', 'precio', 'price']);
