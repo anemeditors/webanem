@@ -1,5 +1,5 @@
 (function() {
-  // 1. DISSENY I ESTILS CSS
+  // 1. INJECCIÓ D'ESTILS CSS
   const css = `
     .inici-grid-2col { display: flex; flex-wrap: wrap; justify-content: space-between; margin-top: 40px; }
     .inici-grid-4col { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 2%; margin-top: 40px; }
@@ -44,7 +44,7 @@
   styleEl.textContent = css;
   document.head.appendChild(styleEl);
 
-  // 2. PARSER I CARREGA DE DADES
+  // 2. PARSER I PROCESSAMENT
   const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQESjqxo632pyAya7JVHONT0tCGm6XSLnHE1ft4dwY7uIRCUKSiXac8tOj1hYVEkmW-1E7KkPgYv-DR/pub?output=csv';
 
   function parseCSV(text) {
@@ -75,8 +75,8 @@
     return (str || '').normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
   }
 
-  function trobarIndex(headers, possiblesNoms) {
-    return headers.findIndex(h => possiblesNoms.includes(norm(h)));
+  function trobarIndex(headers, possibles) {
+    return headers.findIndex(h => possibles.some(p => norm(h).includes(p)));
   }
 
   function generarBotons(ttl, amz) {
@@ -88,7 +88,7 @@
     return h;
   }
 
-  async function iniciar() {
+  async function carregarDades() {
     const secNovetats = document.getElementById('seccio-novetats');
     const secDestacats = document.getElementById('seccio-destacats');
     const secGeneral = document.getElementById('seccio-general');
@@ -97,30 +97,33 @@
 
     try {
       const res = await fetch(CSV_URL);
-      const csvText = await res.text();
-      const rows = parseCSV(csvText);
+      const text = await res.text();
+      const rows = parseCSV(text);
 
       if (rows.length < 2) return;
 
       const headers = rows[0];
 
+      // Reconeixement ultra flexible de columnes
       const idxTitol = trobarIndex(headers, ['titol', 'titulo', 'title']);
       const idxAutor = trobarIndex(headers, ['autor', 'author']);
       const idxPreu = trobarIndex(headers, ['pvp', 'preu', 'precio', 'price']);
-      const idxInici = trobarIndex(headers, ['inici web', 'inici', 'inicio web', 'inicio']);
-      const idxImg = trobarIndex(headers, ['coberta', 'url coberta', 'portada', 'url portada', 'imatge', 'imagen']);
-      const idxLink = trobarIndex(headers, ['url llibre', 'url fitxa', 'url', 'enllac', 'link']);
-      const idxTTL = trobarIndex(headers, ['todostuslibros', 'todos tus libros', 'ttl']);
+      const idxInici = trobarIndex(headers, ['inici', 'inicio', 'estat', 'estado']);
+      const idxImg = trobarIndex(headers, ['coberta', 'portada', 'imatge', 'imagen', 'url']);
+      const idxLink = trobarIndex(headers, ['link', 'enllac', 'fitxa', 'url llibre', 'web']);
+      const idxTTL = trobarIndex(headers, ['todostuslibros', 'ttl']);
       const idxAmz = trobarIndex(headers, ['amazon', 'amz']);
 
       let hNovetats = '', hDestacats = '', hGeneral = '';
 
       for (let i = 1; i < rows.length; i++) {
         const row = rows[i];
-        const titol = idxTitol !== -1 && row[idxTitol] ? row[idxTitol].trim() : '';
-        const estat = idxInici !== -1 && row[idxInici] ? row[idxInici].trim() : '';
+        
+        // Si la fila és buida, ignora-la
+        if (!row || row.length === 0) continue;
 
-        if (!titol || !estat || norm(estat) === 'no es mostra') continue;
+        const titol = idxTitol !== -1 && row[idxTitol] ? row[idxTitol].trim() : (row[0] || '').trim();
+        if (!titol) continue;
 
         const autor = idxAutor !== -1 && row[idxAutor] ? row[idxAutor].trim() : '';
         const preuRaw = idxPreu !== -1 && row[idxPreu] ? row[idxPreu].trim() : '';
@@ -128,12 +131,13 @@
         const link = idxLink !== -1 && row[idxLink] ? row[idxLink].trim() : '#';
         const urlTTL = idxTTL !== -1 && row[idxTTL] ? row[idxTTL].trim() : '';
         const urlAmz = idxAmz !== -1 && row[idxAmz] ? row[idxAmz].trim() : '';
+        const estat = idxInici !== -1 && row[idxInici] ? row[idxInici].trim() : '';
 
         const preu = preuRaw && !preuRaw.includes('€') ? preuRaw + ' €' : preuRaw;
         const botons = generarBotons(urlTTL, urlAmz);
         const estatNorm = norm(estat);
 
-        if (estatNorm === 'novetat') {
+        if (estatNorm.includes('novetat')) {
           hNovetats += `
             <div class="card-destacada">
               <div class="wrapper-coberta">
@@ -145,7 +149,7 @@
               <div class="preu">${preu}</div>
               ${botons}
             </div>`;
-        } else if (estatNorm === 'destacat') {
+        } else if (estatNorm.includes('destacat')) {
           hDestacats += `
             <div class="card-destacada">
               <div class="wrapper-coberta">
@@ -157,7 +161,8 @@
               <div class="preu">${preu}</div>
               ${botons}
             </div>`;
-        } else if (estatNorm === 'general') {
+        } else {
+          // Si no és novetat ni destacat (o la columna no existeix), ho posa a la graella general
           hGeneral += `
             <div class="llibre-general">
               <a href="${link}"><img src="${img}" alt="${titol}"></a>
@@ -174,13 +179,13 @@
       secGeneral.innerHTML = hGeneral;
 
     } catch (e) {
-      console.error('Error en carregar les dades de Google Sheets:', e);
+      console.error('Error al script:', e);
     }
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', iniciar);
+    document.addEventListener('DOMContentLoaded', carregarDades);
   } else {
-    iniciar();
+    carregarDades();
   }
 })();
