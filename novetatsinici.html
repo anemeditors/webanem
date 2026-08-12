@@ -100,21 +100,16 @@
   .anem-autor-llibre {
     font-size: 0.95rem !important;
     color: #555 !important;
-    margin-bottom: 5px !important;
+    margin-bottom: 12px !important;
     word-break: break-word !important;
   }
   .anem-card-petit .anem-autor-llibre {
     font-size: 0.85rem !important;
+    margin-bottom: 10px !important;
   }
-  .anem-preu-llibre {
-    font-size: 1.05rem !important;
+  .anem-preu-inline {
     font-weight: bold !important;
     color: #333 !important;
-    margin-bottom: 12px !important;
-  }
-  .anem-card-petit .anem-preu-llibre {
-    font-size: 0.95rem !important;
-    margin-bottom: 8px !important;
   }
   .anem-botons-box {
     display: flex !important;
@@ -178,7 +173,7 @@
         row.push('');
       } else if ((c === '\r' || c === '\n') && !q) {
         if (c === '\r' && next === '\n') { i++; }
-        r.path ? r.path(row) : r.push(row);
+        r.push(row);
         row = [''];
       } else {
         row[row.length - 1] += c;
@@ -248,6 +243,12 @@
         var botons = generarBotons(urlTTL, urlAmz);
         var estatNorm = norm(estat);
 
+        var blocAutorPreu = '<div class="anem-autor-llibre">' + autor;
+        if (preu) {
+          blocAutorPreu += ' &bull; <span class="anem-preu-inline">' + preu + '</span>';
+        }
+        blocAutorPreu += '</div>';
+
         if (estatNorm.includes('novetat')) {
           hNovetats += '<div class="anem-card-gran">' +
             '<div class="anem-foto-box">' +
@@ -255,7 +256,7 @@
               '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
             '</div>' +
             '<a class="anem-titol-llibre" href="' + link + '"><b>' + titol.toUpperCase() + '</b></a>' +
-            '<div class="anem-autor-llibre">' + autor + ' &bull; <span class="anem-preu-llibre" style="display:inline; font-size:inherit; font-weight:bold; color:#333;">' + preu + '</span></div>' +
+            blocAutorPreu +
             botons +
           '</div>';
         } else if (estatNorm.includes('destacat')) {
@@ -265,7 +266,7 @@
               '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
             '</div>' +
             '<a class="anem-titol-llibre" href="' + link + '"><b>' + titol.toUpperCase() + '</b></a>' +
-            '<div class="anem-autor-llibre">' + autor + ' &bull; <span class="anem-preu-llibre" style="display:inline; font-size:inherit; font-weight:bold; color:#333;">' + preu + '</span></div>' +
+            blocAutorPreu +
             botons +
           '</div>';
         } else if (estatNorm.includes('general') || (estatNorm !== '' && !estatNorm.includes('no'))) {
@@ -273,7 +274,7 @@
             '<div>' +
               '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
               '<a class="anem-titol-llibre" href="' + link + '">' + titol.toUpperCase() + '</a>' +
-              '<div class="anem-autor-llibre">' + autor + ' &bull; <span class="anem-preu-llibre" style="display:inline; font-size:inherit; font-weight:bold; color:#333;">' + preu + '</span></div>' +
+              blocAutorPreu +
             '</div>' +
             '<div>' +
               botons +
