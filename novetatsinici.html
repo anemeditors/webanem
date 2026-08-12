@@ -102,6 +102,7 @@
     color: #555 !important;
     margin-bottom: 12px !important;
     word-break: break-word !important;
+    display: block !important;
   }
   .anem-card-petit .anem-autor-llibre {
     font-size: 0.85rem !important;
@@ -110,6 +111,7 @@
   .anem-preu-inline {
     font-weight: bold !important;
     color: #333 !important;
+    display: inline !important;
   }
   .anem-botons-box {
     display: flex !important;
@@ -243,11 +245,10 @@
         var botons = generarBotons(urlTTL, urlAmz);
         var estatNorm = norm(estat);
 
-        var blocAutorPreu = '<div class="anem-autor-llibre">' + autor;
+        var textAutorPreu = autor;
         if (preu) {
-          blocAutorPreu += ' &bull; <span class="anem-preu-inline">' + preu + '</span>';
+          textAutorPreu += ' &bull; <span class="anem-preu-inline">' + preu + '</span>';
         }
-        blocAutorPreu += '</div>';
 
         if (estatNorm.includes('novetat')) {
           hNovetats += '<div class="anem-card-gran">' +
@@ -256,7 +257,7 @@
               '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
             '</div>' +
             '<a class="anem-titol-llibre" href="' + link + '"><b>' + titol.toUpperCase() + '</b></a>' +
-            blocAutorPreu +
+            '<div class="anem-autor-llibre">' + textAutorPreu + '</div>' +
             botons +
           '</div>';
         } else if (estatNorm.includes('destacat')) {
@@ -266,7 +267,7 @@
               '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
             '</div>' +
             '<a class="anem-titol-llibre" href="' + link + '"><b>' + titol.toUpperCase() + '</b></a>' +
-            blocAutorPreu +
+            '<div class="anem-autor-llibre">' + textAutorPreu + '</div>' +
             botons +
           '</div>';
         } else if (estatNorm.includes('general') || (estatNorm !== '' && !estatNorm.includes('no'))) {
@@ -274,7 +275,7 @@
             '<div>' +
               '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
               '<a class="anem-titol-llibre" href="' + link + '">' + titol.toUpperCase() + '</a>' +
-              blocAutorPreu +
+              '<div class="anem-autor-llibre">' + textAutorPreu + '</div>' +
             '</div>' +
             '<div>' +
               botons +
