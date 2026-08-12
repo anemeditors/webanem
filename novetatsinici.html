@@ -1,40 +1,29 @@
-<style>
-/* CONTENIDORS PRINCIPALS */
-#seccio-general, .inici-grid-4col {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  justify-content: flex-start !important;
-  margin-top: 40px !important;
-  background: transparent !important;
-  padding: 0 !important;
-}
-
-#seccio-novetats, #seccio-destacats, .inici-grid-2col {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  justify-content: space-between !important;
-  margin-top: 40px !important;
-}
-
-/* TARGETES DESTACADES */
-.card-destacada {
-  width: 47% !important;
-  text-align: center !important;
-  animation: fadeUp 0.8s ease !important;
-  box-sizing: border-box !important;
-  margin-bottom: 70px !important;
-  padding-left: 15px !important;
-  background: transparent !important;
-}
-
 .card-destacada .wrapper-coberta {
   position: relative !important;
-  display: inline-block !important;
+  display: inline-flex !important; /* Canviat de inline-block a inline-flex per ajustar l'ample exactament a la imatge */
   margin-bottom: 20px !important;
   background: transparent !important;
   width: auto !important;
 }
 
+.badge-destacat {
+  position: absolute !important;
+  top: 0 !important;
+  right: 100% !important; /* Es col·loca a l'esquerra de la imatge */
+  left: auto !important;
+  transform: none !important;
+  margin-right: 8px !important; /* Distància exacta sense tocar la portada */
+  margin-left: 0 !important;
+  color: white !important;
+  font-size: 0.75em !important;
+  padding: 4px 8px !important;
+  font-weight: bold !important;
+  border-radius: 3px !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  z-index: 2 !important;
+}
 .card-destacada img {
   width: 100% !important;
   height: auto !important;
