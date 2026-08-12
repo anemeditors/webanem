@@ -1,5 +1,5 @@
 (function() {
-  // 1. INJECCIÓ D'ESTILS CSS
+  // 1. DISSENY I ESTILS CSS
   const css = `
     .inici-grid-2col { display: flex; flex-wrap: wrap; justify-content: space-between; margin-top: 40px; }
     .inici-grid-4col { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 2%; margin-top: 40px; }
@@ -35,6 +35,153 @@
     @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     @media (max-width: 768px) {
       .card-destacada { width: 100%; margin-bottom: 60px !important; padding-left: 0; }
+      .llibre-general { width: 48%; margin-bottom: 40px !important; }
+      .card-destacada img { height: 300px; }
+      .badge-destacat { position: relative; transform: none; margin-left: 0; margin-bottom: 8px; display: inline-block; }
+    }
+  `;
+  const styleEl = document.createElement('style');
+  styleEl.textContent = css;
+  document.head.appendChild(styleEl);
+
+  // 2. LECTURA DEL CSV DE GOOGLE SHEETS
+  const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQESjqxo632pyAya7JVHONT0tCGm6XSLnHE1ft4dwY7uIRCUKSiXac8tOj1hYVEkmW-1E7KkPgYv-DR/pub?output=csv';
+
+  function parseCSV(text) {
+    let p = '', c = '', r = [];
+    let q = false;
+    let row = [''];
+    for (let i = 0; i < text.length; i++) {
+      c = text[i];
+      let next = text[i+1];
+      if (c === '"') {
+        if (q && next === '"') { row[row.length - 1] += '"'; i++; }
+        else { q = !q; }
+      } else if (c === ',' && !q) {
+        row.push('');
+      } else if ((c === '\r' || c === '\n') && !q) {
+        if (c === '\r' && next === '\n') { i++; }
+        r.push(row);
+        row = [''];
+      } else {
+        row[row.length - 1] += c;
+      }
+    }
+    if (row.length > 1 || row[0] !== '') r.push(row);
+    return r;
+  }
+
+  function norm(str) {
+    return (str || '').normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
+  }
+
+  function generarBotons(ttl, amz) {
+    if (!ttl && !amz) return '';
+    let h = '<div class="botons-compra">';
+    if (ttl) h += `<a class="btn-extern btn-todostuslibros" href="${ttl}" target="_blank" rel="noopener">Todostuslibros</a>`;
+    if (amz) h += `<a class="btn-extern btn-amazon" href="${amz}" target="_blank" rel="noopener">Amazon</a>`;
+    h += '</div>';
+    return h;
+  }
+
+  async function carregarDades() {
+    const secNovetats = document.getElementById('seccio-novetats');
+    const secDestacats = document.getElementById('seccio-destacats');
+    const secGeneral = document.getElementById('seccio-general');
+
+    if (!secNovetats || !secDestacats || !secGeneral) return;
+
+    try {
+      const res = await fetch(CSV_URL);
+      const text = await res.text();
+      const rows = parseCSV(text);
+
+      if (rows.length < 2) return;
+
+      // Mapem els índexs de les teves columnes exactes
+      const headers = rows[0].map(h => norm(h));
+
+      const idxTitol = headers.indexOf('titol');
+      const idxAutor = headers.indexOf('autor');
+      const idxPreu = headers.indexOf('pvp');
+      const idxInici = headers.indexOf('inici web');
+      const idxImg = headers.indexOf('coberta');
+      const idxLink = headers.indexOf('url llibre');
+      const idxTTL = headers.indexOf('todostuslibros');
+      const idxAmz = headers.indexOf('amazon');
+
+      let hNovetats = '', hDestacats = '', hGeneral = '';
+
+      for (let i = 1; i < rows.length; i++) {
+        const row = rows[i];
+        if (!row || row.length === 0) continue;
+
+        const titol = idxTitol !== -1 && row[idxTitol] ? row[idxTitol].trim() : '';
+        if (!titol) continue;
+
+        const autor = idxAutor !== -1 && row[idxAutor] ? row[idxAutor].trim() : '';
+        const preuRaw = idxPreu !== -1 && row[idxPreu] ? row[idxPreu].trim() : '';
+        const img = idxImg !== -1 && row[idxImg] ? row[idxImg].trim() : '';
+        const link = idxLink !== -1 && row[idxLink] ? row[idxLink].trim() : '#';
+        const urlTTL = idxTTL !== -1 && row[idxTTL] ? row[idxTTL].trim() : '';
+        const urlAmz = idxAmz !== -1 && row[idxAmz] ? row[idxAmz].trim() : '';
+        const estat = idxInici !== -1 && row[idxInici] ? row[idxInici].trim() : '';
+
+        const preu = preuRaw && !preuRaw.includes('€') ? preuRaw + ' €' : preuRaw;
+        const botons = generarBotons(urlTTL, urlAmz);
+        const estatNorm = norm(estat);
+
+        if (estatNorm.includes('novetat')) {
+          hNovetats += `
+            <div class="card-destacada">
+              <div class="wrapper-coberta">
+                <span class="badge-destacat badge-novetat">NOVETAT</span>
+                <a href="${link}"><img src="${img}" alt="${titol}"></a>
+              </div>
+              <a class="titol" href="${link}"><b>${titol.toUpperCase()}</b></a>
+              <div class="autor">${autor}</div>
+              <div class="preu">${preu}</div>
+              ${botons}
+            </div>`;
+        } else if (estatNorm.includes('destacat')) {
+          hDestacats += `
+            <div class="card-destacada">
+              <div class="wrapper-coberta">
+                <span class="badge-destacat badge-destacat-color">DESTACAT</span>
+                <a href="${link}"><img src="${img}" alt="${titol}"></a>
+              </div>
+              <a class="titol" href="${link}"><b>${titol.toUpperCase()}</b></a>
+              <div class="autor">${autor}</div>
+              <div class="preu">${preu}</div>
+              ${botons}
+            </div>`;
+        } else if (estatNorm !== 'no' && estatNorm !== '') {
+          hGeneral += `
+            <div class="llibre-general">
+              <a href="${link}"><img src="${img}" alt="${titol}"></a>
+              <a class="titol" href="${link}">${titol.toUpperCase()}</a>
+              <div class="autor">${autor}</div>
+              <div class="preu">${preu}</div>
+              ${botons}
+            </div>`;
+        }
+      }
+
+      secNovetats.innerHTML = hNovetats;
+      secDestacats.innerHTML = hDestacats;
+      secGeneral.innerHTML = hGeneral;
+
+    } catch (e) {
+      console.error('Error al carregar les dades:', e);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', carregarDades);
+  } else {
+    carregarDades();
+  }
+})();      .card-destacada { width: 100%; margin-bottom: 60px !important; padding-left: 0; }
       .llibre-general { width: 48%; margin-bottom: 40px !important; }
       .card-destacada img { height: 300px; }
       .badge-destacat { position: relative; transform: none; margin-left: 0; margin-bottom: 8px; display: inline-block; }
