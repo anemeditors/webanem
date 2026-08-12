@@ -1,228 +1,171 @@
-<!-- ESTILS UNIFICATS PÀGINA D'INICI -->
-<style>
-/* Contenedors de les graelles */
-.inici-grid-2col {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 40px;
-}
+(function() {
+  // 1. INJECTAR ESTILS CSS
+  const styles = `
+    .inici-grid-2col {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: 40px;
+    }
+    .inici-grid-4col {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 2%;
+      margin-top: 40px;
+    }
+    .card-destacada {
+      width: 47%; 
+      text-align: center;
+      animation: fadeUp 0.8s ease;
+      box-sizing: border-box;
+      margin-bottom: 70px !important; 
+      padding-left: 15px; 
+    }
+    .card-destacada .wrapper-coberta {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    .card-destacada img {
+      height: 360px;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+      transition: transform 0.3s, box-shadow 0.3s;
+      border-radius: 0;
+      display: block;
+      margin: 0 auto;
+    }
+    .card-destacada img:hover {
+      transform: scale(1.05) rotate(1deg);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.35);
+    }
+    .badge-destacat {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+      margin-left: -8px;
+      color: white;
+      font-size: 0.75em;
+      padding: 4px 8px;
+      font-weight: bold;
+      border-radius: 3px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      text-transform: uppercase;
+      white-space: nowrap;
+      z-index: 2;
+    }
+    .badge-novetat { background-color: crimson; }
+    .badge-destacat-color { background-color: #2e7d32; }
+    .card-destacada a.titol {
+      display: block;
+      font-weight: bold;
+      color: #c00;
+      text-decoration: none;
+      margin: 0 0 4px 0;
+      font-size: 1.2em;
+      line-height: 1.2;
+    }
+    .card-destacada .autor {
+      font-size: 1em;
+      color: #555;
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+    .card-destacada .preu {
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 12px;
+    }
+    .llibre-general {
+      width: 23.5%;
+      text-align: center;
+      margin-bottom: 50px !important; 
+      box-sizing: border-box;
+    }
+    .llibre-general img {
+      height: 230px; 
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      margin: 0 auto 15px auto; 
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      display: block;
+    }
+    .llibre-general img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    }
+    .llibre-general a.titol {
+      display: block;
+      font-weight: bold;
+      color: red;
+      text-decoration: none;
+      margin: 0 0 3px 0;
+      line-height: 1.2;
+    }
+    .llibre-general .autor {
+      font-size: 0.9em;
+      color: #555;
+      margin-bottom: 3px;
+      line-height: 1.2;
+    }
+    .llibre-general .preu {
+      font-size: 0.95em;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .botons-compra {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .btn-extern {
+      display: inline-block;
+      padding: 5px 10px;
+      font-size: 0.75em;
+      font-weight: bold;
+      text-decoration: none !important;
+      border-radius: 3px;
+      transition: background-color 0.2s, transform 0.1s;
+      letter-spacing: 0.3px;
+      line-height: 1.2;
+    }
+    .btn-extern:hover { transform: translateY(-1px); }
+    .btn-todostuslibros { background-color: #2b2b2b; color: #ffffff !important; }
+    .btn-todostuslibros:hover { background-color: #000000; }
+    .btn-amazon { background-color: #e47911; color: #ffffff !important; }
+    .btn-amazon:hover { background-color: #d06900; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 768px) {
+      .card-destacada { width: 100%; margin-bottom: 60px !important; padding-left: 0; }
+      .llibre-general { width: 48%; margin-bottom: 40px !important; }
+      .card-destacada img { height: 300px; }
+      .badge-destacat {
+        position: relative;
+        transform: none;
+        margin-left: 0;
+        margin-bottom: 8px;
+        display: inline-block;
+      }
+    }
+  `;
+  const styleSheet = document.createElement("style");
+  styleSheet.innerText = styles;
+  document.head.appendChild(styleSheet);
 
-.inici-grid-4col {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 2%;
-  margin-top: 40px;
-}
-
-/* ==========================================
-   DISSENY 1 I 2: NOVETATS I DESTACATS
-   ========================================== */
-.card-destacada {
-  width: 47%; 
-  text-align: center;
-  animation: fadeUp 0.8s ease;
-  box-sizing: border-box;
-  margin-bottom: 70px !important; 
-  
-  /* MARGE INTERN PERQUÈ L'ETIQUETA TINGUI ESPAI FORA I NO ES TALLI */
-  padding-left: 15px; 
-}
-
-.card-destacada .wrapper-coberta {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 20px;
-}
-
-.card-destacada img {
-  height: 360px;
-  width: auto;
-  max-width: 100%;
-  object-fit: contain;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.25);
-  transition: transform 0.3s, box-shadow 0.3s;
-  border-radius: 0;
-  display: block;
-  margin: 0 auto;
-}
-
-.card-destacada img:hover {
-  transform: scale(1.05) rotate(1deg);
-  box-shadow: 0 14px 28px rgba(0,0,0,0.35);
-}
-
-/* ETIQUETA HORITZONTAL FORA DEL LLIBRE */
-.badge-destacat {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translateX(-100%); /* Desplaça l'etiqueta completament a l'esquerra de la imatge */
-  margin-left: -8px; /* Separació neta respecte a la imatge */
-  color: white;
-  font-size: 0.75em;
-  padding: 4px 8px;
-  font-weight: bold;
-  border-radius: 3px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  text-transform: uppercase;
-  white-space: nowrap;
-  z-index: 2;
-}
-
-.badge-novetat { 
-  background-color: crimson; 
-}
-
-.badge-destacat-color { 
-  background-color: #2e7d32; /* Verd per als destacats */
-}
-
-.card-destacada a.titol {
-  display: block;
-  font-weight: bold;
-  color: #c00;
-  text-decoration: none;
-  margin: 0 0 4px 0;
-  font-size: 1.2em;
-  line-height: 1.2;
-}
-
-.card-destacada .autor {
-  font-size: 1em;
-  color: #555;
-  margin-bottom: 4px;
-  line-height: 1.2;
-}
-
-.card-destacada .preu {
-  font-size: 1.1em;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 12px;
-}
-
-/* ==========================================
-   DISSENY 3: CATÀLEG GENERAL INICI
-   ========================================== */
-.llibre-general {
-  width: 23.5%;
-  text-align: center;
-  margin-bottom: 50px !important; 
-  box-sizing: border-box;
-}
-
-.llibre-general img {
-  height: 230px; 
-  width: auto;
-  max-width: 100%;
-  object-fit: contain;
-  margin: 0 auto 15px auto; 
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  display: block;
-}
-
-.llibre-general img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
-}
-
-.llibre-general a.titol {
-  display: block;
-  font-weight: bold;
-  color: red;
-  text-decoration: none;
-  margin: 0 0 3px 0;
-  line-height: 1.2;
-}
-
-.llibre-general .autor {
-  font-size: 0.9em;
-  color: #555;
-  margin-bottom: 3px;
-  line-height: 1.2;
-}
-
-.llibre-general .preu {
-  font-size: 0.95em;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-/* ==========================================
-   BOTONS DE COMPRA EXTERNA
-   ========================================== */
-.botons-compra {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.btn-extern {
-  display: inline-block;
-  padding: 5px 10px;
-  font-size: 0.75em;
-  font-weight: bold;
-  text-decoration: none !important;
-  border-radius: 3px;
-  transition: background-color 0.2s, transform 0.1s;
-  letter-spacing: 0.3px;
-  line-height: 1.2;
-}
-
-.btn-extern:hover {
-  transform: translateY(-1px);
-}
-
-.btn-todostuslibros {
-  background-color: #2b2b2b;
-  color: #ffffff !important;
-}
-
-.btn-todostuslibros:hover {
-  background-color: #000000;
-}
-
-.btn-amazon {
-  background-color: #e47911;
-  color: #ffffff !important;
-}
-
-.btn-amazon:hover {
-  background-color: #d06900;
-}
-
-/* Animacions i adaptació mòbil */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 768px) {
-  .card-destacada { width: 100%; margin-bottom: 60px !important; padding-left: 0; }
-  .llibre-general { width: 48%; margin-bottom: 40px !important; }
-  .card-destacada img { height: 300px; }
-  .badge-destacat {
-    position: relative;
-    transform: none;
-    margin-left: 0;
-    margin-bottom: 8px;
-    display: inline-block;
-  }
-}
-</style>
-
-<!-- CONTENIDORS DE LES SECCIONS -->
-<div id="seccio-novetats" class="inici-grid-2col"></div>
-<div id="seccio-destacats" class="inici-grid-2col"></div>
-<div id="seccio-general" class="inici-grid-4col"></div>
-
-<script>
+  // 2. LÒGICA I RENDERING DE LES SECCIONS
   const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQESjqxo632pyAya7JVHONT0tCGm6XSLnHE1ft4dwY7uIRCUKSiXac8tOj1hYVEkmW-1E7KkPgYv-DR/pub?output=csv';
 
   function parseCSV(text) {
@@ -265,6 +208,12 @@
   }
 
   async function carregarIniciWeb() {
+    const secNovetats = document.getElementById('seccio-novetats');
+    const secDestacats = document.getElementById('seccio-destacats');
+    const secGeneral = document.getElementById('seccio-general');
+
+    if (!secNovetats || !secDestacats || !secGeneral) return;
+
     try {
       const response = await fetch(CSV_URL);
       const csvText = await response.text();
@@ -309,7 +258,6 @@
 
         const htmlBotons = generarBotonsCompra(urlTTL, urlAmazon);
 
-        // Disseny 1: Novetat
         if (estatInici === 'Novetat') {
           htmlNovetats += `
             <div class="card-destacada">
@@ -323,7 +271,6 @@
               ${htmlBotons}
             </div>`;
         } 
-        // Disseny 2: Destacat
         else if (estatInici === 'Destacat') {
           htmlDestacats += `
             <div class="card-destacada">
@@ -337,7 +284,6 @@
               ${htmlBotons}
             </div>`;
         } 
-        // Disseny 3: General
         else if (estatInici === 'General') {
           htmlGeneral += `
             <div class="llibre-general">
@@ -350,14 +296,18 @@
         }
       }
 
-      document.getElementById('seccio-novetats').innerHTML = htmlNovetats;
-      document.getElementById('seccio-destacats').innerHTML = htmlDestacats;
-      document.getElementById('seccio-general').innerHTML = htmlGeneral;
+      secNovetats.innerHTML = htmlNovetats;
+      secDestacats.innerHTML = htmlDestacats;
+      secGeneral.innerHTML = htmlGeneral;
 
     } catch (e) { 
       console.error('Error carregant dades:', e); 
     }
   }
 
-  carregarIniciWeb();
-</script>
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', carregarIniciWeb);
+  } else {
+    carregarIniciWeb();
+  }
+})();
