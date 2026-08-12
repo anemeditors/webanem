@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catàleg de Llibres</title>
+  <style>
+    body { margin: 0; padding: 20px 10px; background: #ffffff; }
+    .anem-catalog-container * { box-sizing: border-box; margin: 0; padding: 0; }
+    .anem-catalog-container { max-width: 900px; margin: 0 auto; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #333; }
+    
+    .anem-controls-bar { 
+      position: sticky; 
+      top: 0; 
+      z-index: 99; 
+      background: #ffffff; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 12px; 
+      padding: 15px 0; 
+      border-bottom: 2px solid #eee;
+    }
+    
+    .anem-search-row { display: flex; gap: 10px; align-items: center; width: 100%; }
+    .anem-search-box { flex: 1; }
+    .anem-search-box input { width: 100%; padding: 10px 12px; font-size: 0.95rem; border: 1px solid #ccc; border-radius: 4px; outline: none; background: #fff; }
+    .anem-search-box input:focus { border-color: red; }
+
+    .anem-btn-cart {
+      padding: 9px 16px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .anem-btn-cart:hover { background: red; }
+    .anem-btn-cart span { background: red; color: #fff; border-radius: 10px; padding: 2px 7px; font-size: 0.78rem; margin-left: 6px; }
+
+    .anem-buttons-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; width: 100%; }
+    .anem-filter-label { font-size: 0.88rem; font-weight: 700; color: #555; margin-right: 4px; }
+
+    .anem-btn-filter {
+      padding: 7px 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid #ccc;
+      background: #f8f8f8;
+      color: #333;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .anem-btn-filter:hover { background: #eee; }
+    .anem-btn-filter.active { background: red; color: #fff; border-color: red; }
+
+    .anem-dropdowns-row { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; align-items: center; }
+    .anem-filter-box, .anem-sort-box { flex: 1; min-width: 130px; }
+    .anem-filter-box select, .anem-sort-box select { width: 100%; padding: 8px 10px; font-size: 0.85rem; border: 1px solid #ccc; border-radius: 4px; outline: none; background: #fff; cursor: pointer; }
+
+    .anem-llibres-llista { display: flex; flex-direction: column; gap: 40px; padding-top: 25px; }
+    .anem-llibre-item { display: flex; gap: 32px; padding-bottom: 35px; border-bottom: 1px solid #eee; align-items: flex-start; }
+    .anem-llibre-item:last-child { border-bottom: none; }
+
+    .anem-columna-esquerra { width: 155px; flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+
+    .anem-cover-wrapper { width: 100%; overflow: visible; margin-bottom: 4px; }
+    .anem-cover-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .anem-cover-img:hover {
+      transform: scale(1.06);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+      z-index: 10;
+      position: relative;
+    }
+
+    .anem-badge-novetat { background: red; color: #fff; font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; margin-top: 2px; }
+    
+    .anem-disponibilitat { font-size: 0.75rem; font-weight: 600; padding: 3px 10px; border-radius: 12px; display: inline-block; margin-top: 2px; }
+    .anem-disponibilitat.disponible { color: #2e7d32; background: #e8f5e9; }
+    .anem-disponibilitat.esgotat { color: #c62828; background: #ffebee; }
+    .anem-disponibilitat.proximament { color: #ef6c00; background: #fff3e0; }
+    .anem-disponibilitat.limitades { color: #0288d1; background: #e3f2fd; }
+    .anem-disponibilitat.no-disponible { color: #616161; background: #f0f0f0; border: 1px solid #d6d6d6; }
+
+    .anem-dades-tecniques { font-size: 0.81rem; color: #444; width: 100%; display: flex; flex-direction: column; gap: 4px; margin-top: 4px; }
+    .anem-dades-tecniques strong { color: #333; font-weight: 700; }
+    .anem-pvp { font-size: 1.15rem; font-weight: 800; color: #111; margin-top: 6px; display: flex; align-items: baseline; }
+    .anem-pvp-label { font-size: 0.72rem; font-weight: 400; color: #666; margin-left: 5px; text-transform: uppercase; }
+
+    .anem-order-controls { width: 100%; margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+    .anem-qty-row { display: flex; align-items: center; gap: 6px; width: 100%; }
+    .anem-qty-row label { font-size: 0.75rem; font-weight: 600; color: #555; }
+    .anem-qty-input { width: 55px; padding: 5px; font-size: 0.85rem; border: 1px solid #ccc; border-radius: 4px; text-align: center; }
+    
+    .anem-btn-add-order {
+      width: 100%;
+      padding: 7px 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fff;
+      background-color: #222;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .anem-btn-add-order:hover { background-color: #000; }
+    .anem-btn-add-order.added { background-color: #2e7d32; }
+
+    .anem-columna-dreta { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .anem-titol { font-size: 1.35rem; font-weight: 700; color: #111; text-decoration: none; line-height: 1.25; margin-bottom: 6px; display: block; }
+    .anem-titol:hover { color: red; }
+    .anem-subtitol { font-size: 1rem; font-weight: 600; color: #444; margin-bottom: 8px; font-style: italic; }
+    .anem-autor { font-size: 0.92rem; color: #666; font-weight: 600; text-transform: uppercase; margin-bottom: 12px; display: block; text-decoration: none; }
+
+    .anem-frase-destacada { font-size: 0.88rem; font-weight: 600; color: #111; border-left: 3px solid #d1d5db; padding-left: 10px; margin-bottom: 10px; line-height: 1.4; }
+    .anem-sinopsi-text { font-size: 0.78rem; line-height: 1.4; color: #444; margin-bottom: 12px; }
+
+    .anem-credits-secundaris { font-size: 0.8rem; color: #555; margin-bottom: 12px; display: flex; flex-direction: column; gap: 3px; }
+    .anem-credits-secundaris strong { color: #333; font-weight: 700; }
+
+    .anem-llibre-footer { font-size: 0.8rem; color: #666; border-top: none; padding-top: 8px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .anem-llibre-footer-item { display: flex; align-items: center; gap: 4px; }
+    .anem-llibre-footer-item strong { color: #333; font-weight: 700; }
+    
+    .anem-btn-fragment {
+      padding: 7px 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fff;
+      background-color: #222;
+      border: none;
+      border-radius: 4px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.2s;
+      margin-left: auto;
+    }
+    .anem-btn-fragment:hover { background-color: red; color: #fff; }
+
+    @media (max-width: 600px) {
+      .anem-controls-bar { position: relative; }
+      .anem-llibre-item { flex-direction: column; gap: 20px; }
+      .anem-columna-esquerra { width: 100%; }
+      .anem-btn-fragment { margin-left: 0; margin-top: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="anem-catalog-container">
+  <div class="anem-controls-bar">
+    <div class="anem-search-row">
+      <div class="anem-search-box">
+        <input type="text" id="anemSearchInput" placeholder="Cerca per títol, autor, frase, sinopsi o ISBN...">
+      </div>
+      <button type="button" id="anemViewOrderBtn" class="anem-btn-cart">Veure comanda <span id="anemCartCount">0</span></button>
+    </div>
+    
+    <div class="anem-buttons-row">
+      <span class="anem-filter-label">Filtra per:</span>
+      <button type="button" id="anemNovetatsBtn" class="anem-btn-filter">Novetats</button>
+      <button type="button" id="anemDestacatsBtn" class="anem-btn-filter">Destacats</button>
+      <button type="button" id="anemDisponiblesBtn" class="anem-btn-filter">Disponibles</button>
+    </div>
+
+    <div class="anem-dropdowns-row">
+      <div class="anem-filter-box">
+        <select id="anemEditorialFilter"><option value="">Totes les editorials</option></select>
+      </div>
+      <div class="anem-filter-box">
+        <select id="anemCollectionFilter"><option value="">Totes les col·leccions</option></select>
+      </div>
+      <div class="anem-filter-box">
+        <select id="anemLanguageFilter"><option value="">Tots els idiomes</option></select>
+      </div>
+      <div class="anem-sort-box">
+        <select id="anemSortSelect">
+          <option value="">Ordre predeterminat</option>
+          <option value="titol">Títol (A-Z)</option>
+          <option value="autor">Autor (A-Z)</option>
+          <option value="any">Any de publicació</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div id="anemCatalogGrid" class="anem-llibres-llista">
+    <p style="text-align:center; padding:40px; color:#666;">Carregant el catàleg...</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  function initAnemCatalog() {
+    var dadesLlibres = [];
+    var carretoComanda = {};
+    var activeQuickFilter = null;
+
+    function norm(t) { return t ? t.toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim() : ''; }
+
+    function getVal(book, key) {
+      var kTarget = norm(key);
+      for (var prop in book) {
+        if (norm(prop) === kTarget) return book[prop];
+      }
+      return '';
+    }
+
+    function formatPVP(pvpRaw) {
+      if (!pvpRaw) return '';
+      var numStr = pvpRaw.toString().replace(/[^0-9.,]/g, '').replace(',', '.');
+      var val = parseFloat(numStr);
+      if (isNaN(val)) return pvpRaw;
+      return val.toFixed(2).replace('.', ',') + ' €';
+    }
+
+    function renderGrid(items) {
+      var grid = document.getElementById('anemCatalogGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      if (items.length === 0) {
+        grid.innerHTML = '<p style="text-align: center; padding: 40px; color: #777;">No s\'ha trobat cap llibre que coincideixi amb els filtres.</p>';
+        return;
+      }
+
+      items.forEach(function(book) {
+        var titol = getVal(book, 'TÍTOL');
+        var subtitol = getVal(book, 'SUBTÍTOL') || getVal(book, 'SUBTITOL');
+        var autor = getVal(book, 'AUTOR');
+        
+        var traduccio = getVal(book, 'TRADUCCIÓ DE') || getVal(book, 'TRADUCCIO DE') || getVal(book, 'TRADUCCIÓ');
+        var ilustracions = getVal(book, 'IL·LUSTRACIONS DE') || getVal(book, 'IL·LUSTRACIONS');
+        var proleg = getVal(book, 'PRÒLEG DE') || getVal(book, 'PROLEG DE');
+        var epileg = getVal(book, 'EPÍLEG DE') || getVal(book, 'EPILEG DE');
+        var edicioDe = getVal(book, 'EDICIÓ DE') || getVal(book, 'EDICIO DE');
+
+        var isbn = getVal(book, 'ISBN');
+        var pvp = formatPVP(getVal(book, 'PVP'));
+        var imatge = getVal(book, 'COBERTA');
+        var fraseDestacada = getVal(book, 'FRASE DESTACADA');
+        var sinopsi = getVal(book, 'SINOPSI');
+        var novetat = getVal(book, 'NOVETAT');
+        var disponibilitat = getVal(book, 'DISPONIBILITAT');
+        
+        var pagines = getVal(book, 'PÀGINES') || getVal(book, 'PAGINES');
+        var idioma = getVal(book, 'IDIOMA');
+        var editorial = getVal(book, 'EDITORIAL');
+        var coleccio = getVal(book, 'COL·LECCIÓ') || getVal(book, 'COLLECCIO');
+        var numColeccio = getVal(book, 'NÚMERO DE COL·LECCIÓ') || getVal(book, 'NUMERO DE COL·LECCIÓ') || getVal(book, 'NUMERO COL·LECCIO');
+
+        var anyPub = getVal(book, 'ANY DE PUBLICACIÓ') || getVal(book, 'ANY DE PUBLICACIO') || getVal(book, 'ANY');
+        var mides = getVal(book, 'MIDES DEL LLIBRE') || getVal(book, 'MIDES') || getVal(book, 'MESURES');
+        var enquadernacio = getVal(book, 'ENQUADERNACIÓ') || getVal(book, 'ENQUADERNACIO');
+        var edicioTecnica = getVal(book, 'EDICIÓ') || getVal(book, 'EDICIO');
+
+        var urlFragment = getVal(book, 'FRAGMENT') || getVal(book, 'URL FRAGMENT') || getVal(book, 'TASTET');
+        var urlLlibre = getVal(book, 'URL LLIBRE') || getVal(book, 'URL_LLIBRE');
+
+        var isNovetat = norm(novetat) === 'si' || norm(novetat) === 'sí';
+        var inCartQty = carretoComanda[isbn] ? carretoComanda[isbn].quantitat : 1;
+
+        var dispClass = 'disponible';
+        var dispNorm = norm(disponibilitat);
+        if (dispNorm.indexOf('esgotat') !== -1) dispClass = 'esgotat';
+        else if (dispNorm.indexOf('proxim') !== -1) dispClass = 'proximament';
+        else if (dispNorm.indexOf('limitad') !== -1) dispClass = 'limitades';
+        else if (dispNorm.indexOf('no disponible') !== -1 || dispNorm.indexOf('temporalment') !== -1) dispClass = 'no-disponible';
+
+        var orderHTML = '';
+        if (!disponibilitat || dispClass === 'disponible' || dispClass === 'limitades') {
+          orderHTML = '<div class="anem-order-controls">' +
+            '<div class="anem-qty-row"><label>Unitats:</label><input type="number" min="1" value="' + inCartQty + '" class="anem-qty-input" id="qty-' + isbn + '"></div>' +
+            '<button type="button" class="anem-btn-add-order ' + (carretoComanda[isbn] ? 'added' : '') + '" data-isbn="' + isbn + '" data-titol="' + titol.replace(/"/g, "&quot;") + '">' +
+            (carretoComanda[isbn] ? '✓ Afegit' : 'Afegir a la comanda') +
+            '</button></div>';
+        }
+
+        var titolHTML = urlLlibre 
+          ? '<a class="anem-titol" href="' + urlLlibre + '" target="_blank" rel="noopener">' + titol + '</a>'
+          : '<span class="anem-titol">' + titol + '</span>';
+
+        var coleccioText = coleccio;
+        if (coleccioText && numColeccio) coleccioText += ', ' + numColeccio;
+
+        var listCredits = [];
+        if (traduccio) listCredits.push('<span><strong>Traducció de:</strong> ' + traduccio + '</span>');
+        if (ilustracions) listCredits.push('<span><strong>Il·lustracions de:</strong> ' + ilustracions + '</span>');
+        if (proleg) listCredits.push('<span><strong>Pròleg de:</strong> ' + proleg + '</span>');
+        if (epileg) listCredits.push('<span><strong>Epíleg de:</strong> ' + epileg + '</span>');
+        if (edicioDe) listCredits.push('<span><strong>Edició de:</strong> ' + edicioDe + '</span>');
+
+        var creditsHTML = listCredits.length > 0 ? '<div class="anem-credits-secundaris">' + listCredits.join('') + '</div>' : '';
+
+        var footerItems = [];
+        if (anyPub) footerItems.push('<div class="anem-llibre-footer-item"><strong>Any:</strong> ' + anyPub + '</div>');
+        if (enquadernacio) footerItems.push('<div class="anem-llibre-footer-item"><strong>Enquadernació:</strong> ' + enquadernacio + '</div>');
+        if (mides) footerItems.push('<div class="anem-llibre-footer-item"><strong>Mides:</strong> ' + mides + '</div>');
+        if (edicioTecnica) footerItems.push('<div class="anem-llibre-footer-item"><strong>Edició:</strong> ' + edicioTecnica + '</div>');
+        
+        var fragmentHTML = urlFragment ? '<a class="anem-btn-fragment" href="' + urlFragment + '" target="_blank" rel="noopener">Llegir fragment</a>' : '';
+
+        var footerHTML = (footerItems.length > 0 || fragmentHTML) 
+          ? '<div class="anem-llibre-footer">' + footerItems.join(' | ') + fragmentHTML + '</div>' 
+          : '';
+
+        var card = document.createElement('div');
+        card.className = 'anem-llibre-item';
+        card.innerHTML = 
+          '<div class="anem-columna-esquerra">' +
+            (imatge ? '<div class="anem-cover-wrapper"><img class="anem-cover-img" src="' + imatge + '" alt="' + titol.replace(/"/g, "&quot;") + '"></div>' : '') +
+            (isNovetat ? '<span class="anem-badge-novetat">Novetat</span>' : '') +
+            (disponibilitat ? '<span class="anem-disponibilitat ' + dispClass + '">' + disponibilitat + '</span>' : '') +
+            '<div class="anem-dades-tecniques">' +
+              (isbn ? '<div><strong>ISBN:</strong> ' + isbn + '</div>' : '') +
+              (pagines ? '<div><strong>Pàgines:</strong> ' + pagines + '</div>' : '') +
+              (idioma ? '<div><strong>Idioma:</strong> ' + idioma + '</div>' : '') +
+              (editorial ? '<div><strong>Editorial:</strong> ' + editorial + '</div>' : '') +
+              (coleccioText ? '<div><strong>Col·lecció:</strong> ' + coleccioText + '</div>' : '') +
+              (pvp ? '<div class="anem-pvp">' + pvp + '<span class="anem-pvp-label">PVP</span></div>' : '') +
+            '</div>' +
+            orderHTML +
+          '</div>' +
+          '<div class="anem-columna-dreta">' +
+            '<div>' +
+              titolHTML +
+              (subtitol ? '<div class="anem-subtitol">' + subtitol + '</div>' : '') +
+              (autor ? '<div class="anem-autor">' + autor + '</div>' : '') +
+              (fraseDestacada ? '<div class="anem-frase-destacada">' + fraseDestacada + '</div>' : '') +
+              (sinopsi ? '<p class="anem-sinopsi-text">' + sinopsi + '</p>' : '') +
+              creditsHTML +
+            '</div>' +
+            footerHTML +
+          '</div>';
+
+        grid.appendChild(card);
+      });
+
+      var btnAdds = document.querySelectorAll('.anem-btn-add-order');
+      for (var i = 0; i < btnAdds.length; i++) {
+        btnAdds[i].onclick = function() {
+          var isbn = this.getAttribute('data-isbn');
+          var titol = this.getAttribute('data-titol');
+          var qtyInput = document.getElementById('qty-' + isbn);
+          var qty = parseInt(qtyInput ? qtyInput.value : 1, 10) || 1;
+
+          carretoComanda[isbn] = { titol: titol, quantitat: qty };
+          this.textContent = '✓ Afegit';
+          this.classList.add('added');
+
+          var total = 0;
+          for (var k in carretoComanda) { total += carretoComanda[k].quantitat; }
+          document.getElementById('anemCartCount').textContent = total;
+        };
+      }
+    }
+
+    function filterAndRenderData() {
+      var searchText = norm(document.getElementById('anemSearchInput').value);
+      var selectedEd = document.getElementById('anemEditorialFilter').value;
+      var selectedCol = document.getElementById('anemCollectionFilter').value;
+      var selectedLang = document.getElementById('anemLanguageFilter').value;
+      var sortVal = document.getElementById('anemSortSelect').value;
+
+      var filtered = dadesLlibres.filter(function(b) {
+        var matchesSearch = norm(getVal(b, 'TÍTOL')).indexOf(searchText) !== -1 ||
+                            norm(getVal(b, 'AUTOR')).indexOf(searchText) !== -1 ||
+                            norm(getVal(b, 'FRASE DESTACADA')).indexOf(searchText) !== -1 ||
+                            norm(getVal(b, 'SINOPSI')).indexOf(searchText) !== -1 ||
+                            norm(getVal(b, 'ISBN')).indexOf(searchText) !== -1;
+        
+        var matchesEd = selectedEd === '' || getVal(b, 'EDITORIAL') === selectedEd;
+        var matchesCol = selectedCol === '' || getVal(b, 'COL·LECCIÓ') === selectedCol;
+        var matchesLang = selectedLang === '' || getVal(b, 'IDIOMA') === selectedLang;
+
+        var matchesQuick = true;
+        if (activeQuickFilter === 'novetats') {
+          matchesQuick = norm(getVal(b, 'NOVETAT')) === 'si' || norm(getVal(b, 'NOVETAT')) === 'sí';
+        } else if (activeQuickFilter === 'destacats') {
+          var destVal = norm(getVal(b, 'TÍTOL DESTACAT') || getVal(b, 'TITOL DESTACAT'));
+          matchesQuick = destVal === 'si' || destVal === 'sí';
+        } else if (activeQuickFilter === 'disponibles') {
+          var disp = norm(getVal(b, 'DISPONIBILITAT'));
+          matchesQuick = disp === '' || disp.indexOf('disponible') !== -1 || disp.indexOf('limitad') !== -1;
+        }
+
+        return matchesSearch && matchesEd && matchesCol && matchesLang && matchesQuick;
+      });
+
+      if (sortVal === 'titol') {
+        filtered.sort(function(a, b) { return getVal(a, 'TÍTOL').localeCompare(getVal(b, 'TÍTOL')); });
+      } else if (sortVal === 'autor') {
+        filtered.sort(function(a, b) { return getVal(a, 'AUTOR').localeCompare(getVal(b, 'AUTOR')); });
+      } else if (sortVal === 'any') {
+        filtered.sort(function(a, b) {
+          var rawA = getVal(a, 'ANY DE PUBLICACIÓ') || getVal(a, 'ANY DE PUBLICACIO') || getVal(a, 'ANY');
+          var rawB = getVal(b, 'ANY DE PUBLICACIÓ') || getVal(b, 'ANY DE PUBLICACIO') || getVal(b, 'ANY');
+          var matchA = rawA.toString().match(/\d{4}/);
+          var matchB = rawB.toString().match(/\d{4}/);
+          var anyA = matchA ? parseInt(matchA[0], 10) : 0;
+          var anyB = matchB ? parseInt(matchB[0], 10) : 0;
+          return anyB - anyA;
+        });
+      }
+
+      renderGrid(filtered);
+    }
+
+    function setupQuickButtons() {
+      var btnNov = document.getElementById('anemNovetatsBtn');
+      var btnDes = document.getElementById('anemDestacatsBtn');
+      var btnDis = document.getElementById('anemDisponiblesBtn');
+
+      function toggleFilter(filterName, btn) {
+        if (activeQuickFilter === filterName) {
+          activeQuickFilter = null;
+          btn.classList.remove('active');
+        } else {
+          btnNov.classList.remove('active');
+          btnDes.classList.remove('active');
+          btnDis.classList.remove('active');
+          activeQuickFilter = filterName;
+          btn.classList.add('active');
+        }
+        filterAndRenderData();
+      }
+
+      if(btnNov) btnNov.onclick = function() { toggleFilter('novetats', this); };
+      if(btnDes) btnDes.onclick = function() { toggleFilter('destacats', this); };
+      if(btnDis) btnDis.onclick = function() { toggleFilter('disponibles', this); };
+    }
+
+    var sheetID = '13utJRVf1qRYdt_e6Xg_XGRMne8xa6mN8CQ-ismxhff8';
+    var url = 'https://docs.google.com/spreadsheets/d/' + sheetID + '/gviz/tq?tqx=out:json';
+
+    fetch(url)
+      .then(function(res) { 
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.text(); 
+      })
+      .then(function(text) {
+        var jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+        var data = JSON.parse(jsonString);
+
+        var cols = data.table.cols.map(function(c) { return c ? c.label : ''; });
+        var rows = data.table.rows;
+
+        dadesLlibres = rows.map(function(r) {
+          var obj = {};
+          r.c.forEach(function(cell, idx) {
+            var headerName = cols[idx];
+            if (headerName) {
+              obj[headerName] = (cell && cell.v !== null && cell.v !== undefined) ? cell.v.toString().trim() : '';
+            }
+          });
+          return obj;
+        });
+
+        var edSelect = document.getElementById('anemEditorialFilter');
+        var eds = Array.from(new Set(dadesLlibres.map(function(i) { return getVal(i, 'EDITORIAL'); }).filter(Boolean)));
+        eds.forEach(function(e) { edSelect.innerHTML += '<option value="' + e + '">' + e + '</option>'; });
+
+        var colSelect = document.getElementById('anemCollectionFilter');
+        var colsList = Array.from(new Set(dadesLlibres.map(function(i) { return getVal(i, 'COL·LECCIÓ'); }).filter(Boolean)));
+        colsList.forEach(function(c) { colSelect.innerHTML += '<option value="' + c + '">' + c + '</option>'; });
+
+        var langSelect = document.getElementById('anemLanguageFilter');
+        var langs = Array.from(new Set(dadesLlibres.map(function(i) { return getVal(i, 'IDIOMA'); }).filter(Boolean)));
+        langs.forEach(function(l) { langSelect.innerHTML += '<option value="' + l + '">' + l + '</option>'; });
+
+        document.getElementById('anemSearchInput').oninput = filterAndRenderData;
+        edSelect.onchange = filterAndRenderData;
+        colSelect.onchange = filterAndRenderData;
+        langSelect.onchange = filterAndRenderData;
+        document.getElementById('anemSortSelect').onchange = filterAndRenderData;
+
+        setupQuickButtons();
+        renderGrid(dadesLlibres);
+      })
+      .catch(function(err) {
+        console.error(err);
+        var grid = document.getElementById('anemCatalogGrid');
+        if (grid) {
+          grid.innerHTML = '<p style="text-align:center; color:red; padding:30px;"><strong>Error en carregar el catàleg.</strong><br>Comproveu que el document de Google Sheets té els permisos públics oberts.</p>';
+        }
+      });
+
+    var viewBtn = document.getElementById('anemViewOrderBtn');
+    if (viewBtn) {
+      viewBtn.onclick = function() {
+        var isbns = Object.keys(carretoComanda);
+        if (isbns.length === 0) return alert('El carretó de la comanda està buit.');
+
+        var w = window.open('', '_blank');
+        if (!w) return alert('Permet les finestres emergents per veure la comanda.');
+
+        var rows = '';
+        var detail = '';
+        isbns.forEach(function(k) {
+          var it = carretoComanda[k];
+          rows += '<tr><td style="padding:10px;border-bottom:1px solid #eee;"><strong>' + k + '</strong></td><td style="padding:10px;border-bottom:1px solid #eee;">' + it.titol + '</td><td style="padding:10px;border-bottom:1px solid #eee;text-align:center;">' + it.quantitat + ' u.</td></tr>';
+          detail += 'ISBN: ' + k + ' | Títol: ' + it.titol + ' | Quantitat: ' + it.quantitat + '\n';
+        });
+
+        w.document.write(
+          '<!DOCTYPE html><html lang="ca"><head><meta charset="UTF-8"><title>Resum de Comanda</title></head><body style="font-family:sans-serif;max-width:600px;margin:30px auto;padding:20px;">' +
+          '<h2 style="margin-bottom:15px;">Resum de la comanda</h2>' +
+          '<table style="width:100%;border-collapse:collapse;margin-bottom:20px;"><tr style="background:#f5f5f5;"><th style="padding:10px;text-align:left;">ISBN</th><th style="padding:10px;text-align:left;">Títol</th><th style="padding:10px;">Unitats</th></tr>' + rows + '</table>' +
+          '<form action="https://formsubmit.co/contacte@anemeditors.com" method="POST">' +
+          '<input type="hidden" name="_subject" value="Nova comanda de llibres des del catàleg">' +
+          '<input type="hidden" name="Detall de la comanda" value="' + detail + '">' +
+          '<p style="margin-bottom:10px;"><label style="font-weight:bold;display:block;margin-bottom:5px;">El teu correu electrònic de contacte:</label><input type="email" name="email" required style="width:100%;padding:10px;border:1px solid #ccc;border-radius:4px;"></p>' +
+          '<button type="submit" style="width:100%;padding:12px;background:red;color:#fff;font-weight:bold;border:none;border-radius:4px;cursor:pointer;font-size:1rem;">Enviar comanda</button>' +
+          '</form></body></html>'
+        );
+        w.document.close();
+      };
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAnemCatalog);
+  } else {
+    initAnemCatalog();
+  }
+})();
+</script>
+
+</body>
+</html>
