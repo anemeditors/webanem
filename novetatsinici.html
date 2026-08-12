@@ -51,9 +51,7 @@
     text-align: center !important;
     box-sizing: border-box !important;
     margin-bottom: 40px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
+    display: block !important;
     width: 100% !important;
   }
   .anem-card-petit img {
@@ -106,7 +104,7 @@
   }
   .anem-card-petit .anem-autor-llibre {
     font-size: 0.85rem !important;
-    margin-bottom: 10px !important;
+    margin-bottom: 12px !important;
   }
   .anem-preu-inline {
     font-weight: bold !important;
@@ -118,7 +116,7 @@
     justify-content: center !important;
     gap: 6px !important;
     flex-wrap: wrap !important;
-    margin-top: auto !important;
+    margin-top: 10px !important;
   }
   .anem-boto-ext {
     display: inline-block !important;
@@ -272,14 +270,10 @@
           '</div>';
         } else if (estatNorm.includes('general') || (estatNorm !== '' && !estatNorm.includes('no'))) {
           hGeneral += '<div class="anem-card-petit">' +
-            '<div>' +
-              '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
-              '<a class="anem-titol-llibre" href="' + link + '">' + titol.toUpperCase() + '</a>' +
-              '<div class="anem-autor-llibre">' + textAutorPreu + '</div>' +
-            '</div>' +
-            '<div>' +
-              botons +
-            '</div>' +
+            '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
+            '<a class="anem-titol-llibre" href="' + link + '">' + titol.toUpperCase() + '</a>' +
+            '<div class="anem-autor-llibre">' + textAutorPreu + '</div>' +
+            botons +
           '</div>';
         }
       }
