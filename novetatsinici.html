@@ -1,4 +1,5 @@
 <style>
+/* CONTENIDORS PRINCIPALS */
 #seccio-general, .inici-grid-4col {
   display: flex !important;
   flex-wrap: wrap !important;
@@ -15,6 +16,7 @@
   margin-top: 40px !important;
 }
 
+/* TARGETES DESTACADES */
 .card-destacada {
   width: 47% !important;
   text-align: center !important;
@@ -30,7 +32,7 @@
   display: inline-block !important;
   margin-bottom: 20px !important;
   background: transparent !important;
-  width: 100% !important;
+  width: auto !important;
 }
 
 .card-destacada img {
@@ -53,12 +55,12 @@
   filter: drop-shadow(0px 12px 18px rgba(0,0,0,0.35)) !important;
 }
 
+/* ETIQUETES (PUNT 1: Ajustades més a prop del llibre sense tocar-lo) */
 .badge-destacat {
   position: absolute !important;
   top: 0 !important;
-  left: 0 !important;
-  transform: translateX(-100%) !important;
-  margin-left: -8px !important;
+  right: 100% !important;
+  margin-right: 6px !important;
   color: white !important;
   font-size: 0.75em !important;
   padding: 4px 8px !important;
@@ -98,6 +100,7 @@
   margin-bottom: 12px !important;
 }
 
+/* LLIBRES GENERALS */
 .llibre-general {
   width: 23.5% !important;
   text-align: center !important;
@@ -119,10 +122,11 @@
   box-shadow: none !important;
 }
 
+/* PUNT 2: Cobertes de la part General més petites */
 .llibre-general img {
   width: 100% !important;
   height: auto !important;
-  max-width: 100% !important;
+  max-width: 180px !important;
   display: block !important;
   margin: 0 auto !important;
   background: transparent !important;
@@ -163,6 +167,7 @@
   margin-bottom: 10px !important;
 }
 
+/* BOTONS DE COMPRA */
 .botons-compra {
   display: flex !important;
   justify-content: center !important;
@@ -195,6 +200,7 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* VERSIÓ MÒBIL (intacta) */
 @media screen and (max-width: 768px) {
   #seccio-general, .inici-grid-4col {
     display: flex !important;
@@ -215,6 +221,9 @@
     border: none !important;
     box-shadow: none !important;
   }
+  .llibre-general img {
+    max-width: 100% !important;
+  }
   .llibre-general a, .card-destacada a, .llibre-general img, .card-destacada img {
     background: transparent !important;
     border: none !important;
@@ -224,8 +233,8 @@
   }
   .badge-destacat {
     position: relative !important;
-    transform: none !important;
-    margin-left: 0 !important;
+    right: auto !important;
+    margin-right: 0 !important;
     margin-bottom: 8px !important;
     display: inline-block !important;
   }
