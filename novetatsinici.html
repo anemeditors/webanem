@@ -1,254 +1,6 @@
-<style>
-/* CONTENIDORS PRINCIPALS */
-#seccio-general, .inici-grid-4col {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  justify-content: flex-start !important;
-  margin-top: 40px !important;
-  background: transparent !important;
-  padding: 0 !important;
-}
-
-#seccio-novetats, #seccio-destacats, .inici-grid-2col {
-  display: flex !important;
-  flex-wrap: wrap !important;
-  justify-content: space-between !important;
-  margin-top: 40px !important;
-}
-
-/* TARGETES DESTACADES */
-.card-destacada {
-  width: 47% !important;
-  text-align: center !important;
-  animation: fadeUp 0.8s ease !important;
-  box-sizing: border-box !important;
-  margin-bottom: 70px !important;
-  padding-left: 15px !important;
-  background: transparent !important;
-}
-
-.card-destacada .wrapper-coberta {
-  position: relative !important;
-  display: inline-flex !important;
-  margin-bottom: 20px !important;
-  background: transparent !important;
-  width: auto !important;
-}
-
-.card-destacada img {
-  width: 100% !important;
-  height: auto !important;
-  max-width: 320px !important;
-  transition: transform 0.3s, filter 0.3s !important;
-  display: block !important;
-  margin: 0 auto !important;
-  background: transparent !important;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-  filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.25)) !important;
-  mix-blend-mode: multiply !important;
-}
-
-.card-destacada img:hover {
-  transform: scale(1.03) !important;
-  filter: drop-shadow(0px 12px 18px rgba(0,0,0,0.35)) !important;
-}
-
-/* ETIQUETES AL COSTAT DE LA COBERTA */
-.badge-destacat {
-  position: absolute !important;
-  top: 0 !important;
-  right: 100% !important;
-  left: auto !important;
-  transform: none !important;
-  margin-right: 8px !important;
-  margin-left: 0 !important;
-  color: white !important;
-  font-size: 0.75em !important;
-  padding: 4px 8px !important;
-  font-weight: bold !important;
-  border-radius: 3px !important;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important;
-  text-transform: uppercase !important;
-  white-space: nowrap !important;
-  z-index: 2 !important;
-}
-
-.badge-novetat { background-color: crimson !important; }
-.badge-destacat-color { background-color: #2e7d32 !important; }
-
-.card-destacada a.titol {
-  display: block !important;
-  font-weight: bold !important;
-  color: #c00 !important;
-  text-decoration: none !important;
-  margin: 0 0 4px 0 !important;
-  font-size: 1.2em !important;
-  line-height: 1.2 !important;
-  background: transparent !important;
-}
-
-.card-destacada .autor {
-  font-size: 1em !important;
-  color: #555 !important;
-  margin-bottom: 4px !important;
-  line-height: 1.2 !important;
-}
-
-.card-destacada .preu {
-  font-size: 1.1em !important;
-  font-weight: bold !important;
-  color: #333 !important;
-  margin-bottom: 12px !important;
-}
-
-/* LLIBRES GENERALS */
-.llibre-general {
-  width: 23.5% !important;
-  text-align: center !important;
-  margin-bottom: 50px !important;
-  box-sizing: border-box !important;
-  background: transparent !important;
-  border: none !important;
-  padding: 0 !important;
-  box-shadow: none !important;
-}
-
-.llibre-general a {
-  display: block !important;
-  margin-bottom: 15px !important;
-  text-decoration: none !important;
-  background: transparent !important;
-  border: none !important;
-  padding: 0 !important;
-  box-shadow: none !important;
-}
-
-/* COBERTES GENERALS REDUÏDES */
-.llibre-general img {
-  width: auto !important;
-  height: auto !important;
-  max-width: 130px !important;
-  max-height: 200px !important;
-  display: block !important;
-  margin: 0 auto !important;
-  background: transparent !important;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-  filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.22)) !important;
-  mix-blend-mode: multiply !important;
-  transition: transform 0.2s, filter 0.2s !important;
-}
-
-.llibre-general img:hover {
-  transform: scale(1.04) !important;
-  filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.32)) !important;
-}
-
-.llibre-general a.titol {
-  display: block !important;
-  font-weight: bold !important;
-  color: red !important;
-  text-decoration: none !important;
-  margin: 0 0 3px 0 !important;
-  line-height: 1.2 !important;
-  background: transparent !important;
-}
-
-.llibre-general .autor {
-  font-size: 0.9em !important;
-  color: #555 !important;
-  margin-bottom: 3px !important;
-  line-height: 1.2 !important;
-}
-
-.llibre-general .preu {
-  font-size: 0.95em !important;
-  font-weight: bold !important;
-  color: #333 !important;
-  margin-bottom: 10px !important;
-}
-
-/* BOTONS DE COMPRA */
-.botons-compra {
-  display: flex !important;
-  justify-content: center !important;
-  gap: 8px !important;
-  flex-wrap: wrap !important;
-  margin-top: 8px !important;
-  background: transparent !important;
-}
-
-.btn-extern {
-  display: inline-block !important;
-  padding: 5px 10px !important;
-  font-size: 0.75em !important;
-  font-weight: bold !important;
-  text-decoration: none !important;
-  border-radius: 3px !important;
-  transition: background-color 0.2s, transform 0.1s !important;
-  letter-spacing: 0.3px !important;
-  line-height: 1.2 !important;
-}
-
-.btn-extern:hover { transform: translateY(-1px) !important; }
-.btn-todostuslibros { background-color: #2b2b2b !important; color: #ffffff !important; }
-.btn-todostuslibros:hover { background-color: #000000 !important; }
-.btn-amazon { background-color: #e47911 !important; color: #ffffff !important; }
-.btn-amazon:hover { background-color: #d06900 !important; }
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* VERSIÓ MÒBIL */
-@media screen and (max-width: 768px) {
-  #seccio-general, .inici-grid-4col {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    justify-content: space-between !important;
-    gap: 0 !important;
-    width: 100% !important;
-  }
-  .card-destacada { width: 100% !important; margin-bottom: 60px !important; padding-left: 0 !important; }
-  .llibre-general {
-    width: 47% !important;
-    max-width: 47% !important;
-    flex: 0 0 47% !important;
-    margin-bottom: 40px !important;
-    padding: 0 !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-  }
-  .llibre-general img {
-    max-width: 100% !important;
-    max-height: none !important;
-  }
-  .llibre-general a, .card-destacada a, .llibre-general img, .card-destacada img {
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-  }
-  .badge-destacat {
-    position: relative !important;
-    right: auto !important;
-    margin-right: 0 !important;
-    margin-bottom: 8px !important;
-    display: inline-block !important;
-  }
-}
-</style>
-
-<div id="seccio-novetats" class="inici-grid-2col"></div>
-<div id="seccio-destacats" class="inici-grid-2col"></div>
-<div id="seccio-general" class="inici-grid-4col"></div>
+<div id="seccio-novetats" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin-top: 40px;"></div>
+<div id="seccio-destacats" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin-top: 40px;"></div>
+<div id="seccio-general" style="display: flex; flex-wrap: wrap; justify-content: flex-start; margin-top: 40px;"></div>
 
 <script>
 (function() {
@@ -288,9 +40,9 @@
 
   function generarBotons(ttl, amz) {
     if (!ttl && !amz) return '';
-    var h = '<div class="botons-compra">';
-    if (ttl) h += '<a class="btn-extern btn-todostuslibros" href="' + ttl + '" target="_blank" rel="noopener">Todostuslibros</a>';
-    if (amz) h += '<a class="btn-extern btn-amazon" href="' + amz + '" target="_blank" rel="noopener">Amazon</a>';
+    var h = '<div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 8px;">';
+    if (ttl) h += '<a style="display: inline-block; padding: 5px 10px; font-size: 0.75em; font-weight: bold; text-decoration: none; border-radius: 3px; background-color: #2b2b2b; color: #ffffff;" href="' + ttl + '" target="_blank" rel="noopener">Todostuslibros</a>';
+    if (amz) h += '<a style="display: inline-block; padding: 5px 10px; font-size: 0.75em; font-weight: bold; text-decoration: none; border-radius: 3px; background-color: #e47911; color: #ffffff;" href="' + amz + '" target="_blank" rel="noopener">Amazon</a>';
     h += '</div>';
     return h;
   }
@@ -339,33 +91,33 @@
         var estatNorm = norm(estat);
 
         if (estatNorm.includes('novetat')) {
-          hNovetats += '<div class="card-destacada">' +
-            '<div class="wrapper-coberta">' +
-              '<span class="badge-destacat badge-novetat">NOVETAT</span>' +
-              '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
+          hNovetats += '<div style="width: 47%; text-align: center; box-sizing: border-box; margin-bottom: 70px; padding-left: 15px;">' +
+            '<div style="position: relative; display: inline-flex; margin-bottom: 20px; width: auto;">' +
+              '<span style="position: absolute; top: 0; right: 100%; margin-right: 8px; color: white; font-size: 0.75em; padding: 4px 8px; font-weight: bold; border-radius: 3px; background-color: crimson; text-transform: uppercase; white-space: nowrap; z-index: 2;">NOVETAT</span>' +
+              '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '" style="width: 100%; height: auto; max-width: 320px; display: block; margin: 0 auto; filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.25)); mix-blend-mode: multiply;"></a>' +
             '</div>' +
-            '<a class="titol" href="' + link + '"><b>' + titol.toUpperCase() + '</b></a>' +
-            '<div class="autor">' + autor + '</div>' +
-            '<div class="preu">' + preu + '</div>' +
+            '<a style="display: block; font-weight: bold; color: #c00; text-decoration: none; margin: 0 0 4px 0; font-size: 1.2em;" href="' + link + '"><b>' + titol.toUpperCase() + '</b></a>' +
+            '<div style="font-size: 1em; color: #555; margin-bottom: 4px;">' + autor + '</div>' +
+            '<div style="font-size: 1.1em; font-weight: bold; color: #333; margin-bottom: 12px;">' + preu + '</div>' +
             botons +
           '</div>';
         } else if (estatNorm.includes('destacat')) {
-          hDestacats += '<div class="card-destacada">' +
-            '<div class="wrapper-coberta">' +
-              '<span class="badge-destacat badge-destacat-color">DESTACAT</span>' +
-              '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
+          hDestacats += '<div style="width: 47%; text-align: center; box-sizing: border-box; margin-bottom: 70px; padding-left: 15px;">' +
+            '<div style="position: relative; display: inline-flex; margin-bottom: 20px; width: auto;">' +
+              '<span style="position: absolute; top: 0; right: 100%; margin-right: 8px; color: white; font-size: 0.75em; padding: 4px 8px; font-weight: bold; border-radius: 3px; background-color: #2e7d32; text-transform: uppercase; white-space: nowrap; z-index: 2;">DESTACAT</span>' +
+              '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '" style="width: 100%; height: auto; max-width: 320px; display: block; margin: 0 auto; filter: drop-shadow(0px 8px 12px rgba(0,0,0,0.25)); mix-blend-mode: multiply;"></a>' +
             '</div>' +
-            '<a class="titol" href="' + link + '"><b>' + titol.toUpperCase() + '</b></a>' +
-            '<div class="autor">' + autor + '</div>' +
-            '<div class="preu">' + preu + '</div>' +
+            '<a style="display: block; font-weight: bold; color: #c00; text-decoration: none; margin: 0 0 4px 0; font-size: 1.2em;" href="' + link + '"><b>' + titol.toUpperCase() + '</b></a>' +
+            '<div style="font-size: 1em; color: #555; margin-bottom: 4px;">' + autor + '</div>' +
+            '<div style="font-size: 1.1em; font-weight: bold; color: #333; margin-bottom: 12px;">' + preu + '</div>' +
             botons +
           '</div>';
         } else if (estatNorm.includes('general') || (estatNorm !== '' && !estatNorm.includes('no'))) {
-          hGeneral += '<div class="llibre-general">' +
-            '<a href="' + link + '"><img src="' + img + '" alt="' + titol + '"></a>' +
-            '<a class="titol" href="' + link + '">' + titol.toUpperCase() + '</a>' +
-            '<div class="autor">' + autor + '</div>' +
-            '<div class="preu">' + preu + '</div>' +
+          hGeneral += '<div style="width: 23.5%; text-align: center; margin-bottom: 50px; box-sizing: border-box;">' +
+            '<a style="display: block; margin-bottom: 15px; text-decoration: none;" href="' + link + '"><img src="' + img + '" alt="' + titol + '" style="width: auto; height: auto; max-width: 130px; max-height: 200px; display: block; margin: 0 auto; filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.22)); mix-blend-mode: multiply;"></a>' +
+            '<a style="display: block; font-weight: bold; color: red; text-decoration: none; margin: 0 0 3px 0;" href="' + link + '">' + titol.toUpperCase() + '</a>' +
+            '<div style="font-size: 0.9em; color: #555; margin-bottom: 3px;">' + autor + '</div>' +
+            '<div style="font-size: 0.95em; font-weight: bold; color: #333; margin-bottom: 10px;">' + preu + '</div>' +
             botons +
           '</div>';
         }
